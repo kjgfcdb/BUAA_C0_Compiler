@@ -854,25 +854,16 @@ int main() {
 			quadCodeTable.push_back(bb.newQuads[i]);
 		for (int i = 0; i < dagQuad.size(); i++)//添加各个函数的基本块四元式
 			quadCodeTable.push_back(dagQuad[i]);
-		graphColorer gc;
+		graphColorer gc;//图染色器
 		for (int i = 0; i < bb.funcBlocks.size(); i++) {
 			gc.buildInterferenceGraph(bb.funcBlocks[i]);
 		}
 		CodeGenerator cg(bb.funcBlocks);//代码生成器
+		cg.genOptMips();
 #else
-		CodeGenerator cg({});
+		NaiveGenerator ng;//未优化版本
+		ng.generateMips();
 #endif // OPTIMIZE_ON
-		cg.generateMips();
-		/*for (int i = 0; i < bb.funcBlocks.size(); i++) {
-		printf("---\n");
-		bb.funcBlocks[i]->genInOutSet();
-		for (int j = 0; j < bb.funcBlocks[i]->innerBlocks.size(); j++) {
-		printf(">>>\n");
-		for (set<string>::iterator ite = bb.funcBlocks[i]->innerBlocks[j]->inSet.begin();
-		ite != bb.funcBlocks[i]->innerBlocks[j]->inSet.end(); ite++)
-		printf("%s\n", (*ite).c_str());
-		}
-		}*/
 		printSymbolTable();
 		printBtab();
 		fclose(infile);// 关闭文件
