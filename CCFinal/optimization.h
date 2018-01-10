@@ -234,7 +234,9 @@ void BaseBlock::genBaseBlock() {
 		}
 		k = btab[btabIdx].lastItem;
 		while (symbolTable[k].lev != 0) {
-			tempFuncBlock->glbAndParam.insert(symbolTable[k].name);
+			if (symbolTable[k].objTyp == parameter || symbolTable[k].objTyp == constant) {
+				tempFuncBlock->glbAndParam.insert(symbolTable[k].name);
+			}
 			k = symbolTable[k].link;
 		}
 		funcBlocks.push_back(tempFuncBlock);//将此函数块加入函数块数组。

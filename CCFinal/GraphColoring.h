@@ -75,23 +75,23 @@ void graphColorer::colorGraph(FuncBaseBlock* fbb, vector<vector<int>>& iG, set<s
 	while (!nodeQue.empty()) {
 		int nodeId = nodeQue.back();
 		if (noGlobalReg.find(nodeId) == noGlobalReg.end()) {//只有未标记“不分配全局变量”的节点才能分配到全局变量
-			if (color < GLOBAL_REG_NUM) {
-				int2color[nodeId] = color;
-				color++;
-			}
-			//for (int color = 0; color < GLOBAL_REG_NUM; color++) {
-			//	bool dupColor = false;//颜色是否重复
-			//	for (int i = 0; i < saveIG[nodeId].size(); i++) {//判断nodeId周围的节点是否与nodeId的颜色相同
-			//		if (saveIG[nodeId][i] == 1 && color == int2color[i]) {
-			//			dupColor = true;
-			//			break;
-			//		}
-			//	}
-			//	if (!dupColor) {//如果nodeId与周围节点颜色不重复，那么将其染色
-			//		int2color[nodeId] = color;
-			//		break;
-			//	}
+			//if (color < GLOBAL_REG_NUM) {
+			//	int2color[nodeId] = color;
+			//	color++;
 			//}
+			for (int color = 0; color < GLOBAL_REG_NUM; color++) {
+				bool dupColor = false;//颜色是否重复
+				for (int i = 0; i < saveIG[nodeId].size(); i++) {//判断nodeId周围的节点是否与nodeId的颜色相同
+					if (saveIG[nodeId][i] == 1 && color == int2color[i]) {
+						dupColor = true;
+						break;
+					}
+				}
+				if (!dupColor) {//如果nodeId与周围节点颜色不重复，那么将其染色
+					int2color[nodeId] = color;
+					break;
+				}
+			}
 		}
 		nodeQue.pop_back();
 	}
@@ -111,7 +111,7 @@ void graphColorer::buildInterferenceGraph(FuncBaseBlock* fbb) {
 	for (int i = 0; i < fbb->innerBlocks.size(); i++) {//将此函数块中的所有基本块的out集中的变量放入crossBBVar，因为那些变量是跨基本块仍然活跃的
 		BaseBlock* temp = fbb->innerBlocks[i];
 		set<string>::iterator ite = temp->outSet.begin();
-		while (ite != temp->outSet.end() && fbb->glbAndParam.find(*ite) != fbb->glbAndParam.end()) {//程序的全局变量不分配全局寄存器
+		while (ite != temp->outSet.end() && fbb->glbAndParam.find(*ite) == fbb->glbAndParam.end()) {//程序的全局变量不分配全局寄存器
 			crossBBVar.insert(*ite);
 			ite++;
 		}

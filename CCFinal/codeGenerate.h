@@ -19,39 +19,28 @@ ofstream asmout;
 //代码生成单元
 class CodeGenerator {
 private:
-	int curBtab;//在分程序表中的函数指针，指向当前是第几个函数
-	int curFunc;//当前函数在符号表中的位置
+	int curBtabIdx;//在分程序表中的函数指针，指向当前是第几个函数
+	int curFuncIdx;//当前函数在符号表中的位置
 	map<int, int> tempVar;//将临时变量的标号映射为它们在本层的地址
-	map<string, int > funcIdx;
-	int funcNum;
+	map<string, int > func2num;//将函数映射为数字标号
 	vector<regPoolItem> regPool;//寄存器池
 	vector<regPoolItem> globalRegPool;//全局寄存器池
 	vector<FuncBaseBlock*> funcBlocks;//函数块
 	int regPoolPointer;//寄存器分配指针，用于实现类似轮转分配的效果
 	FuncBaseBlock* curFuncBlock;//当前函数块
 	int curBaseBlock;//当前基本块的索引
-	bool ifOpt;//是否开启优化
 public:
 	CodeGenerator(vector<FuncBaseBlock*> _funcBlocks) {
 		funcBlocks = _funcBlocks;
-		if (funcBlocks.size() == 0) {
-			ifOpt = false;
-		}
-		else {
-			ifOpt = true;
-		}
 		curFuncBlock = NULL;
 		curBaseBlock = 0;
-		curBtab = 0;
-		curFunc = 0;
-		funcNum = 0;
+		curBtabIdx = 0;
+		curFuncIdx = 0;
 		regPoolPointer = 0;
-		for (int i = 0; i < REGPOOL_SIZE; i++) {
+		for (int i = 0; i < REGPOOL_SIZE; i++) 
 			regPool.push_back({ false,"","" ,false });
-		}
-		for (int i = 0; i < GLOBAL_REGPOOL_SIZE; i++) {
+		for (int i = 0; i < GLOBAL_REGPOOL_SIZE; i++) 
 			globalRegPool.push_back({ false,"","",false });
-		}
 	}
 	//将整数变为字符串
 	static string int2str(int x) {
@@ -96,11 +85,10 @@ public:
 		stringstream ss;
 		int i;
 		bool found = false;
-		if (curFuncBlock->id2Greg.find(id) != curFuncBlock->id2Greg.end() &&
-			curFuncBlock->id2Greg[id] != -1) {//如果是全局变量，则分配给它相应的全局寄存器
+		if (curFuncBlock->id2Greg.find(id) != curFuncBlock->id2Greg.end() && curFuncBlock->id2Greg[id] != -1) {
 			i = curFuncBlock->id2Greg[id];
 			ss << "$s" << i;
-			if (needload) emit("lw", "$s" + int2str(i), mem, " # load (" + ss.str() + ") = " + id);
+			//if (needload) emit("lw", "$s" + int2str(i), mem, " # load (" + ss.str() + ") = " + id);
 			globalRegPool[i].id = id;
 			globalRegPool[i].inUse = true;
 			globalRegPool[i].mem = mem;
@@ -135,24 +123,7 @@ public:
 		}
 	}
 
-	//将全局寄存器中的值全部写回
-	void globalRegSpillAll(bool dirtyOnly) {
-		for (int i = 0; i < globalRegPool.size(); i++) {
-			if (globalRegPool[i].inUse && globalRegPool[i].id != "") {
-				if (!dirtyOnly) {//只需写回脏位
-					emit("sw", "$s" + int2str(i), globalRegPool[i].mem, " # spill " + globalRegPool[i].id);
-				}
-				else if (globalRegPool[i].dirty) {//不仅脏位要写，有效的也要写，用于函数调用前面
-					emit("sw", "$s" + int2str(i), globalRegPool[i].mem, " # spill " + globalRegPool[i].id);
-				}
-				globalRegPool[i].id = "";
-				globalRegPool[i].mem = "";
-			}
-			globalRegPool[i].inUse = false;
-			globalRegPool[i].dirty = false;
-		}
-	}
-	//将寄存器池中的所有变量全部写回内存，而刚刚取出的变量则无需再写回
+	//将临时寄存器池中的所有变量全部写回内存，而刚刚取出的变量则无需再写回
 	void regPoolSpillAll() {
 		//将寄存器池清空，其中寄存器保存的所有变量写入相应位置
 		for (int i = 0; i < regPool.size(); i++) {
@@ -174,12 +145,11 @@ public:
 			regPool[i].inUse = false;
 			regPool[i].dirty = false;
 		}
-		globalRegSpillAll(true);
 	}
 	//CodeGenerator类的全局搜索，搜索对应标识符在符号表中索引
 	int cgGlobalSearch(string itemName) {
 		symbolTable[0].name = itemName;//设置哨兵
-		int i, curIdx = btab[curBtab].lastItem;//获取当前所在函数层的最后一个符号表项
+		int i, curIdx = btab[curBtabIdx].lastItem;//获取当前所在函数层的最后一个符号表项
 		if (curIdx == 0) {
 			//如果当前的索引为0，那么说明当前函数中没有任何项，为此从前往后所搜符号表，找到相应的函数位置
 			//因为此时，curBtab就指示出当前是第几个函数
@@ -187,7 +157,7 @@ public:
 			while (true) {
 				if (symbolTable[j].objTyp == function)
 					temp++;
-				if (temp == curBtab) break;
+				if (temp == curBtabIdx) break;
 				j++;
 			}
 			curIdx = j;
@@ -243,8 +213,7 @@ public:
 	string getItemAddr(string& itemName) {
 		stringstream tot;
 		if (itemName.size() > 0 && itemName[0] == '#') {//是一个临时变量
-			//tot << (-4 * (MEM_SAVE + getIntValue(false, itemName.substr(regPrefix.size())) + btab[curBtab].isize)) << "($fp)";
-			tot << (-4 * (MEM_SAVE + tempVar[getIntValue(false, itemName.substr(regPrefix.size()))] + btab[curBtab].isize)) << "($fp)";
+			tot << (-4 * (MEM_SAVE + tempVar[getIntValue(false, itemName.substr(regPrefix.size()))] + btab[curBtabIdx].isize)) << "($fp)";
 		}
 		else if (itemName == "") {
 			return itemName;
@@ -363,7 +332,7 @@ public:
 	}
 	//生成MIPS指令代码
 	void genOptMips() {
-		int i;
+		int i,funcNum = 0;
 		//如果有错误或者没有一条四元式，不生成mips代码
 		if (errCnt != 0 || quadCodeTable.size() == 0) return;
 		cout << "############################## Global String ##############################" << endl;
@@ -391,43 +360,44 @@ public:
 		//为函数建立 函数名-索引 的映射关系，目的是将所有函数名映射为'Func_n'的形式
 		for (int j = 0; j < quadCodeTable.size(); j++) {
 			if (quadCodeTable[j].right == "()")  //函数
-				funcIdx[quadCodeTable[j].left] = funcNum++;//更新函数索引
+				func2num[quadCodeTable[j].left] = funcNum++;//更新函数索引
 		}
 		cout << "addu $sp,$gp,$0 # update $sp" << endl;
-		cout << "j " << funcLabel(funcIdx["main"]) << " # jump to main function" << endl;//跳转到主函数开始执行
+		cout << "j " << funcLabel(func2num["main"]) << " # jump to main function" << endl;//跳转到主函数开始执行
 		while (i < quadCodeTable.size() && !isQuadFunc(quadCodeTable[i])) //跳转到函数出现
 			i++;
 		while (i < quadCodeTable.size()) {
 			bool spilled = false;
 			if (isQuadFunc(quadCodeTable[i])) {//函数声明，注意它们都是全局的
 				tempVar.clear();//清空临时变量与索引的映射关系
-				string ret_type = quadCodeTable[i].op;//函数返回类型
 				string func_name = quadCodeTable[i].left;//函数名
-				curFuncBlock = ifOpt ? funcBlocks[curBtab] : NULL;//当前函数基本块
+				curFuncBlock = funcBlocks[curBtabIdx];//当前函数基本块
 				curBaseBlock = 0;//当前基本块在函数块内的索引为0
-				curBtab++;//函数索引加一
-				curFunc = cgGlobalSearch(func_name);//找到此函数对应的符号表项索引
+				curBtabIdx++;//函数索引加一
+				curFuncIdx = cgGlobalSearch(func_name);//找到此函数对应的符号表项索引
+				for (int k = 0; k < globalRegPool.size(); k++)
+					globalRegPool[k] = { false,"","",false };
 				cout << endl;
-				labelInstr(funcLabel(funcIdx[func_name]), "function " + func_name);//产生函数下标
+				labelInstr(funcLabel(func2num[func_name]), "function " + func_name);//产生函数下标
 				//$sp下降，继续为保留空间留出位置，所谓保留空间，是指$ra与$fp等在函数调用的过程需要保存的数据
 				emit("subiu", "$sp", "$sp", int2str(MEM_SAVE * 4), " # make space for $fp and $ra");
 				//约定旧的fp在新的fp所指向的位置，而旧的ra在旧的fp下面
 				emit("sw", "$fp", int2str((MEM_SAVE - 1) * 4) + "($sp)", " # save $fp");//保存fp指针
 				emit("sw", "$ra", int2str((MEM_SAVE - 2) * 4) + "($sp)", " # save $ra");//保存函数返回地址
-				emit("addiu", "$fp", "$sp", ((MEM_SAVE - 1) * 4 + symbolTable[curFunc].dimen * 4), " # $fp = old $sp");//现在fp充当定位的base
-				if (btab[curBtab].isize * 4 + calTemp(i) * 4 - btab[curBtab].psize * 4 != 0)
-					emit("subiu", "$sp", "$sp", (btab[curBtab].isize * 4 + calTemp(i) * 4 - btab[curBtab].psize * 4),
+				emit("addiu", "$fp", "$sp", ((MEM_SAVE - 1) * 4 + symbolTable[curFuncIdx].dimen * 4), " # $fp = old $sp");//现在fp充当定位的base
+				if (btab[curBtabIdx].isize * 4 + calTemp(i) * 4 - btab[curBtabIdx].psize * 4 != 0)
+					emit("subiu", "$sp", "$sp", (btab[curBtabIdx].isize * 4 + calTemp(i) * 4 - btab[curBtabIdx].psize * 4),
 						" # make space for locals and temps");//为局部变量以及临时变量留空间
 			}
 			else if (quadCodeTable[i].op == "endFunc") {//函数结束	exit_Func_1 # exit function foo
 				regPoolSpillAll();
 				spilled = true;
-				labelInstr("exit_" + funcLabel(funcIdx[quadCodeTable[i].left]), "exit function " + quadCodeTable[i].left);
-				if ((btab[curBtab].isize - btab[curBtab].psize + tempVar.size()) * 4 != 0)
-					emit("addiu", "$sp", "$sp", ((btab[curBtab].isize - btab[curBtab].psize + tempVar.size()) * 4), " # pop locals and temps");//弹栈
+				labelInstr("exit_" + funcLabel(func2num[quadCodeTable[i].left]), "exit function " + quadCodeTable[i].left);
+				if ((btab[curBtabIdx].isize - btab[curBtabIdx].psize + tempVar.size()) * 4 != 0)
+					emit("addiu", "$sp", "$sp", ((btab[curBtabIdx].isize - btab[curBtabIdx].psize + tempVar.size()) * 4), " # pop locals and temps");//弹栈
 				emit("lw", "$fp", int2str((MEM_SAVE - 1) * 4) + "($sp)", "");
 				emit("lw", "$ra", int2str((MEM_SAVE - 2) * 4) + "($sp)", "");
-				emit("addiu", "$sp", "$sp", ((symbolTable[curFunc].dimen + MEM_SAVE) * 4), "");//恢复参数区
+				emit("addiu", "$sp", "$sp", ((symbolTable[curFuncIdx].dimen + MEM_SAVE) * 4), "");//恢复参数区
 				if (quadCodeTable[i].left != "main") //不是主函数才返回
 					emit("jr", "$ra");
 				else {
@@ -454,11 +424,19 @@ public:
 				emit("sw", _tn, "0($sp)", "");//存入参数
 			}
 			else if (quadCodeTable[i].op == "call") {//函数调用，实际上就是一个跳转
-				globalRegSpillAll(false);//全局寄存器全部清空
 				regPoolSpillAll();//全部写回
 				spilled = true;
-
-				emit("jal", funcLabel(funcIdx[quadCodeTable[i].left]));
+				for (int k = 0; k < globalRegPool.size(); k++) {
+					if (globalRegPool[k].inUse && curFuncBlock->innerBlocks[curBaseBlock]->outSet.find(globalRegPool[k].id) !=
+						curFuncBlock->innerBlocks[curBaseBlock]->outSet.end())
+						emit("sw", "$s" + int2str(k), globalRegPool[k].mem, " # save " + globalRegPool[k].id + "(global reg)");//存入参数
+				}
+				emit("jal", funcLabel(func2num[quadCodeTable[i].left]));
+				for (int k = 0; k < globalRegPool.size(); k++) {
+					if (globalRegPool[k].inUse && curFuncBlock->innerBlocks[curBaseBlock]->outSet.find(globalRegPool[k].id) !=
+						curFuncBlock->innerBlocks[curBaseBlock]->outSet.end())
+						emit("lw", "$s" + int2str(k), globalRegPool[k].mem, " # save " + globalRegPool[k].id + "(global reg)");//存入参数
+				}
 			}
 			else if (isQuadComp(quadCodeTable[i])) {//关系运算符
 				branchInstr(i);
@@ -481,15 +459,15 @@ public:
 						emit("li", "$v1", quadCodeTable[i].left, " # @RET = " + quadCodeTable[i].left);
 					}
 					else if (quadCodeTable[i].left != "@RET") {//如果四元式的left域不是@RET，那么需要对$v1进行赋值，否则不需要
-						if (findInRegPool(quadCodeTable[i].left) == "") 
+						if (findInRegPool(quadCodeTable[i].left) == "")
 							emit("lw", "$v1", getItemAddr(quadCodeTable[i].left), " # @RET = " + quadCodeTable[i].left);
-						else 
+						else
 							emit("addu", "$v1", "$0", findInRegPool(quadCodeTable[i].left), " # @RET = " + quadCodeTable[i].left);
 					}
 				}
 				regPoolSpillAll();//清空寄存器池
 				spilled = true;
-				emit("j", "exit_" + funcLabel(funcIdx[symbolTable[curFunc].name]));//离开函数
+				emit("j", "exit_" + funcLabel(func2num[symbolTable[curFuncIdx].name]));//离开函数
 			}
 			else if (isQuadCalc(quadCodeTable[i])) {//运算类指令
 				calcuInstr(i);
@@ -564,20 +542,28 @@ public:
 				else
 					emit("li", "$v0", "12", "# read char : " + quadCodeTable[i].left);
 				emit("syscall", "");
-				dest = findInRegPool(quadCodeTable[i].left);
-				if (dest == "") {
-					emit("sw", "$v0", getItemAddr(quadCodeTable[i].left), "");
+				if (curFuncBlock->id2Greg.find(quadCodeTable[i].left) != curFuncBlock->id2Greg.end()) {//如果是分配全局寄存器的变量
+					dest = "$s" + int2str(curFuncBlock->id2Greg[quadCodeTable[i].left]);
+					emit("addu", dest, "$0", "$v0", "");
+					globalRegPool[getIntValue(false, dest.substr(2))].id = quadCodeTable[i].left;
+					globalRegPool[getIntValue(false, dest.substr(2))].mem = getItemAddr(quadCodeTable[i].left);
+					globalRegPool[getIntValue(false, dest.substr(2))].dirty = true;
+					globalRegPool[getIntValue(false, dest.substr(2))].inUse = true;
 				}
 				else {
-					emit("addu", dest, "$0", "$v0", "");
-					if (dest[1] == 's') //全局寄存器
-						globalRegPool[getIntValue(false, dest.substr(2))].dirty = true;
-					else //临时寄存器
+					dest = findInRegPool(quadCodeTable[i].left);
+					if (dest == "") {
+						emit("sw", "$v0", getItemAddr(quadCodeTable[i].left), "");
+					}
+					else {
+						emit("addu", dest, "$0", "$v0", "");
 						regPool[getIntValue(false, dest.substr(2))].dirty = true;
+						regPool[getIntValue(false, dest.substr(2))].inUse = true;
+					}
 				}
 			}
-			else if (quadCodeTable[i].op == "printInt" || quadCodeTable[i].op=="printChr") {
-				if (quadCodeTable[i].op=="printInt") emit("li", "$v0", "1", "# print int : " + quadCodeTable[i].left);
+			else if (quadCodeTable[i].op == "printInt" || quadCodeTable[i].op == "printChr") {
+				if (quadCodeTable[i].op == "printInt") emit("li", "$v0", "1", "# print int : " + quadCodeTable[i].left);
 				else emit("li", "$v0", "11", " # print char : " + quadCodeTable[i].left);
 				if (isConstant(quadCodeTable[i].left)) {  //针对数字常量情况
 					emit("li", "$a0", quadCodeTable[i].left, "");
@@ -796,7 +782,6 @@ public:
 		while (i < quadCodeTable.size()) {
 			if (isQuadFunc(quadCodeTable[i])) {//函数声明，注意它们都是全局的
 				tempVar.clear();//清空临时变量与索引的映射关系
-				string ret_type = quadCodeTable[i].op;//函数返回类型
 				string func_name = quadCodeTable[i].left;//函数名
 				curBtab++;//函数索引加一
 				curFunc = cgGlobalSearch(func_name);//找到此函数对应的符号表项索引
@@ -938,7 +923,7 @@ public:
 				CodeGenerator::emit("sw", "$v0", getItemAddr(quadCodeTable[i].left), " # scanfChr " + quadCodeTable[i].left);
 			}
 			else if (quadCodeTable[i].op == "printInt" || quadCodeTable[i].op == "printChr") {
-				if (quadCodeTable[i].op=="printInt") CodeGenerator::emit("li", "$v0", "1", "# print int " + quadCodeTable[i].left);
+				if (quadCodeTable[i].op == "printInt") CodeGenerator::emit("li", "$v0", "1", "# print int " + quadCodeTable[i].left);
 				else CodeGenerator::emit("li", "$v0", "11", " # print char : " + quadCodeTable[i].left);
 				if (isConstant(quadCodeTable[i].left))   //针对数字常量情况
 					CodeGenerator::emit("li", "$a0", quadCodeTable[i].left, "");
