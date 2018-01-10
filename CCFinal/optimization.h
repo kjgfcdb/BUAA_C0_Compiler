@@ -19,6 +19,7 @@ public:
 	string op;//树节点的操作符
 	int quadId;//此节点对应的四元式索引
 	int dagId;//树节点的dagId
+	int ref;//引用次数
 	dagTreeNode* leftson;
 	dagTreeNode* rightson;
 	vector<dagTreeNode*> parent;
@@ -28,6 +29,7 @@ public:
 		dagId = _dagId;
 		leftson = NULL;
 		rightson = NULL;
+		ref = 0;
 	}
 };
 
@@ -423,9 +425,11 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 			if (searchInNodeTable(src1) == -1) //左操作数未找到
 				enterNodeTable(src1);//新建表节点并将其插入节点表，同时新建树节点
 			src1Id = nodeTable[searchInNodeTable(src1)]->dagId;//左操作数节点dag编号
+			treeNodes[src1Id]->ref++;
 			if (searchInNodeTable(src2) == -1) //右操作数未找到
 				enterNodeTable(src2);//新建表节点并将其插入节点表，同时新建树节点
 			src2Id = nodeTable[searchInNodeTable(src2)]->dagId;//右操作数节点dag编号
+			treeNodes[src2Id]->ref++;
 			if (searchInTreeTable(oprt, src1Id, src2Id) == -1) {//中间节点未找到
 				dagTreeNode* treenode = new dagTreeNode(dagNodeCnt++);//新建树节点
 				treenode->quadId = i;//设置四元式标号
@@ -458,6 +462,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 			if (searchInNodeTable(src) == -1)
 				enterNodeTable(src);
 			srcId = nodeTable[searchInNodeTable(src)]->dagId;
+			treeNodes[srcId]->ref++;
 			int resultIdx = searchInNodeTable(result);
 			if (resultIdx == -1) {//只需要新建表节点，无需新建树节点
 				dagTableNode* tablenode = new dagTableNode();
@@ -477,22 +482,34 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 		else if (quadTable[i].op == "printInt" || quadTable[i].op == "printChr" || quadTable[i].op == "ret" || quadTable[i].op == "push") {
 			//需要用到一个寄存器
 			curDagId[i] = {};
-			if (searchInNodeTable(quadTable[i].left) != -1)
-				curDagId[i].push_back(nodeTable[searchInNodeTable(quadTable[i].left)]->dagId);
-			else
+			if (searchInNodeTable(quadTable[i].left) != -1) {
+				int lidx = nodeTable[searchInNodeTable(quadTable[i].left)]->dagId;
+				treeNodes[lidx]->ref++;
+				curDagId[i].push_back(lidx);
+			}
+			else {
 				curDagId[i].push_back(-1);//为-1表示就是直接输出四元式中的字符串即可
+			}
 		}
 		else if (isQuadComp(quadTable[i]) || quadTable[i].op == "[]=") {
 			//需要用到两个寄存器
 			curDagId[i] = {};
-			if (searchInNodeTable(quadTable[i].left) != -1)
-				curDagId[i].push_back(nodeTable[searchInNodeTable(quadTable[i].left)]->dagId);
-			else
+			if (searchInNodeTable(quadTable[i].left) != -1) {
+				int lidx = nodeTable[searchInNodeTable(quadTable[i].left)]->dagId;
+				treeNodes[lidx]->ref++;
+				curDagId[i].push_back(lidx);
+			}
+			else {
 				curDagId[i].push_back(-1);
-			if (searchInNodeTable(quadTable[i].right) != -1)
-				curDagId[i].push_back(nodeTable[searchInNodeTable(quadTable[i].right)]->dagId);
-			else
+			}
+			if (searchInNodeTable(quadTable[i].right) != -1) {
+				int ridx = nodeTable[searchInNodeTable(quadTable[i].right)]->dagId;
+				treeNodes[ridx]->ref++;
+				curDagId[i].push_back(ridx);
+			}
+			else {
 				curDagId[i].push_back(-1);
+			}
 		}
 	}
 
@@ -558,7 +575,8 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 			int lidx = searchInNodeTable(lchild->value);
 			int ridx = searchInNodeTable(rchild->value);
 			if (lchild->leftson == NULL && lchild->rightson == NULL &&
-				lidx != -1 && nodeTable[lidx]->dagId != lchild->dagId) {
+				lidx != -1 && nodeTable[lidx]->dagId != lchild->dagId && 
+				treeNodes[lchild->dagId]->ref > 1) {
 				//应该只对引用次数大于1的叶结点进行保存
 				string lreg = buildRegName(allocReg());
 				quadCode qc = { "=",treeNodes[lchild->dagId]->value,"",lreg };
@@ -566,7 +584,8 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 				printQuad(qc);
 			}
 			if (rchild->leftson == NULL && rchild->rightson == NULL &&
-				ridx != -1 && nodeTable[ridx]->dagId != rchild->dagId) {
+				ridx != -1 && nodeTable[ridx]->dagId != rchild->dagId &&
+				treeNodes[rchild->dagId]->ref > 1) {
 				string rreg = buildRegName(allocReg());
 				quadCode qc = { "=",treeNodes[rchild->dagId]->value,"",rreg };
 				treeNodes[rchild->dagId]->value = rreg;
