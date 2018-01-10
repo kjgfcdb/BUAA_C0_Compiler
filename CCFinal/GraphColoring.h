@@ -111,7 +111,7 @@ void graphColorer::buildInterferenceGraph(FuncBaseBlock* fbb) {
 	for (int i = 0; i < fbb->innerBlocks.size(); i++) {//将此函数块中的所有基本块的out集中的变量放入crossBBVar，因为那些变量是跨基本块仍然活跃的
 		BaseBlock* temp = fbb->innerBlocks[i];
 		set<string>::iterator ite = temp->outSet.begin();
-		while (ite != temp->outSet.end()){//程序的全局变量不分配全局寄存器
+		while (ite != temp->outSet.end() && fbb->glbAndParam.find(*ite) != fbb->glbAndParam.end()) {//程序的全局变量不分配全局寄存器
 			crossBBVar.insert(*ite);
 			ite++;
 		}

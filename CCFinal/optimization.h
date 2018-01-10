@@ -40,6 +40,7 @@ public:
 	vector<BaseBlock*> innerBlocks;//属于当前函数块的内部块
 								   //生成此函数块内基本块的in，out集合
 	map<string, int> id2Greg;//将标识符映射到全局寄存器
+	set<string> glbAndParam;//全局变量和参数
 	void genInOutSet();
 };
 //基本块类
@@ -209,7 +210,9 @@ void BaseBlock::genBaseBlock() {
 		printQuad(quadCodeTable[i]);
 		i++;
 	}
+	int btabIdx = 0;
 	while (i < quadCodeTable.size()) {
+		btabIdx++;
 		FuncBaseBlock* tempFuncBlock = new FuncBaseBlock();
 		while (true) {
 			BaseBlock* tempBlock = new BaseBlock();
@@ -224,6 +227,16 @@ void BaseBlock::genBaseBlock() {
 				break;
 		}
 		buildRel(tempFuncBlock);//建立此函数块内基本块之间的联系
+		int k = 1;//为函数块填写全局变量和参数变量
+		while (symbolTable[k].objTyp != function) {
+			tempFuncBlock->glbAndParam.insert(symbolTable[k].name);
+			k++;
+		}
+		k = btab[btabIdx].lastItem;
+		while (symbolTable[k].lev != 0) {
+			tempFuncBlock->glbAndParam.insert(symbolTable[k].name);
+			k = symbolTable[k].link;
+		}
 		funcBlocks.push_back(tempFuncBlock);//将此函数块加入函数块数组。
 	}
 }
