@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="newQuad.txt" />
+    <Text Include="origin.txt" />
     <Text Include="out.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

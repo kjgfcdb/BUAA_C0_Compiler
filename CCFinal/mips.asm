@@ -33,7 +33,7 @@ _str28 :  .asciiz "default"
 .text
 # initialize global constant
 addu $gp,$sp,$0 # let $gp=$sp to get more space
-subiu $gp,$gp,20512 # make space for global variabel and constant
+subi $gp,$gp,20512 # make space for global variabel and constant
 # initialize global constant
 li $t0,1 # cst1=1
 sw $t0,0($gp)
@@ -51,11 +51,11 @@ addu $sp,$gp,$0 # update $sp
 j Func_29 # jump to main function
 
 Func_0: # function const_define
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,32 # make space for locals and temps
+	subi $sp,$sp,32 # make space for locals and temps
 	li $t0,1 # const a=1
 	sw $t0,-8($fp)
 	li $t0,0 # const b=0
@@ -86,7 +86,7 @@ exit_Func_0: # exit function const_define
 	jr $ra
 
 Func_1: # function const_define_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -98,11 +98,11 @@ exit_Func_1: # exit function const_define_test
 	jr $ra
 
 Func_2: # function var_define
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,80 # make space for locals and temps
+	subi $sp,$sp,80 # make space for locals and temps
 exit_Func_2: # exit function var_define
 	addiu $sp,$sp,80 # pop locals and temps
 	lw $fp,4($sp)
@@ -111,7 +111,7 @@ exit_Func_2: # exit function var_define
 	jr $ra
 
 Func_3: # function var_define_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -123,11 +123,11 @@ exit_Func_3: # exit function var_define_test
 	jr $ra
 
 Func_4: # function define
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,24 # make space for locals and temps
+	subi $sp,$sp,24 # make space for locals and temps
 	li $t0,1 # const int1=1
 	sw $t0,-8($fp)
 	li $t0,122 # const cst24=122
@@ -142,7 +142,7 @@ exit_Func_4: # exit function define
 	jr $ra
 
 Func_5: # function define_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -159,11 +159,11 @@ exit_Func_5: # exit function define_test
 	jr $ra
 
 Func_6: # function operator
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,108 # make space for locals and temps
+	subi $sp,$sp,108 # make space for locals and temps
 	li $t0,1
 	li $t1,0
 	subu $t2,$t0,$t1 # #reg17 = 1-0
@@ -239,7 +239,7 @@ exit_Func_6: # exit function operator
 	jr $ra
 
 Func_7: # function operator_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -254,7 +254,7 @@ exit_Func_7: # exit function operator_test
 	jr $ra
 
 Func_8: # function string
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -271,7 +271,7 @@ exit_Func_8: # exit function string
 	jr $ra
 
 Func_9: # function string_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -283,11 +283,11 @@ exit_Func_9: # exit function string_test
 	jr $ra
 
 Func_10: # function dowhile
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,24 # make space for locals and temps
+	subi $sp,$sp,24 # make space for locals and temps
 	li $s1,100 # $s1=100
 	li $s0,0 # $s0=0
 Label_0:
@@ -334,7 +334,7 @@ exit_Func_10: # exit function dowhile
 	jr $ra
 
 Func_11: # function dowhile_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -346,11 +346,11 @@ exit_Func_11: # exit function dowhile_test
 	jr $ra
 
 Func_12: # function ifcondition
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,48 # make space for locals and temps
+	subi $sp,$sp,48 # make space for locals and temps
 	li $s0,0 # $s0=0
 	li $t0,1
 	li $t1,1
@@ -435,11 +435,11 @@ exit_Func_12: # exit function ifcondition
 	jr $ra
 
 Func_13: # function switchcodintionans
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,8 # $fp = old $sp
-	subiu $sp,$sp,4 # make space for locals and temps
+	subi $sp,$sp,4 # make space for locals and temps
 	lw $t0,0($fp) # load $t0 = x
 	addu $s0,$0,$t0 # $s0=x
 Label_23:
@@ -473,18 +473,18 @@ exit_Func_13: # exit function switchcodintionans
 	jr $ra
 
 Func_14: # function switchcodintion
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,24 # make space for locals and temps
+	subi $sp,$sp,24 # make space for locals and temps
 	li $s2,1 # $s2=1
 	li $s1,0 # $s1=0
 	li $s0,0 # $s0=0
 Label_27:
 	li $t0,1
 	addu $s3,$s2,$t0 # #reg66 = i+1
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s2,0($sp)
 	sw $s0,-16($fp) # save toy(global reg)
 	sw $s1,-12($fp) # save rightnumber(global reg)
@@ -536,11 +536,11 @@ exit_Func_14: # exit function switchcodintion
 	jr $ra
 
 Func_15: # function condition
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,20 # make space for locals and temps
+	subi $sp,$sp,20 # make space for locals and temps
 	li $t0,5 # const intermax=5
 	sw $t0,-8($fp)
 	li $t0,0 # $t0=0
@@ -611,7 +611,7 @@ exit_Func_15: # exit function condition
 	jr $ra
 
 Func_16: # function condition_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -628,16 +628,16 @@ exit_Func_16: # exit function condition_test
 	jr $ra
 
 Func_17: # function miscellaneous
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,1188 # make space for locals and temps
+	subi $sp,$sp,1188 # make space for locals and temps
 	li $s1,0 # $s1=0
 	li $s0,0 # $s0=0
 Label_46:
 	sll $t0,$s1,2
-	subiu $t1,$fp,16
+	subi $t1,$fp,16
 	subu $t1,$t1,$t0
 	sw $s1,0($t1) # array[i] = i
 	li $t0,1
@@ -652,7 +652,7 @@ Label_46:
 	li $s0,0 # $s0=0
 Label_47:
 	sll $t0,$s1,2
-	subiu $t1,$fp,124
+	subi $t1,$fp,124
 	subu $t1,$t1,$t0
 	sw $s2,0($t1) # buf[i] = ch1
 	li $t0,1
@@ -687,7 +687,7 @@ Label_48:
 	sw $t7,-1172($fp)
 	sll $t7,$t6,2
 	sw $t8,-1176($fp)
-	subiu $t8,$fp,124
+	subi $t8,$fp,124
 	subu $t8,$t8,$t7
 	li $t9,'a'
 	sw $t9,0($t8) # buf[#reg110] = 'a'
@@ -699,7 +699,7 @@ Label_48:
 	blt $t2,$s1,Label_48 # #reg113<endid
 	li $t0,0
 	sll $t1,$t0,2
-	subiu $t2,$fp,124
+	subi $t2,$fp,124
 	subu $t2,$t2,$t1
 	lw $t3,0($t2) # #reg117=buf[0]
 	li $t4,'a'
@@ -718,7 +718,7 @@ exit_Func_17: # exit function miscellaneous
 	jr $ra
 
 Func_18: # function miscellaneous_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
@@ -730,11 +730,11 @@ exit_Func_18: # exit function miscellaneous_test
 	jr $ra
 
 Func_19: # function fibonaci
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,8 # $fp = old $sp
-	subiu $sp,$sp,16 # make space for locals and temps
+	subi $sp,$sp,16 # make space for locals and temps
 	lw $t0,0($fp) # load $t0 = n
 	addu $s0,$0,$t0 # $s0=n
 Label_52:
@@ -761,14 +761,14 @@ Label_51:
 	lw $t0,0($fp) # load $t0 = n
 	li $t1,1
 	subu $t2,$t0,$t1 # #reg123 = n-1
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t2,0($sp)
 	jal Func_19
 	lw $t0,0($fp) # load $t0 = n
 	li $t1,2
 	subu $t2,$t0,$t1 # #reg125 = n-2
 	addu $s0,$0,$v1 # $s0=@RET
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t2,0($sp)
 	sw $s0,-24($fp) # save #reg124(global reg)
 	jal Func_19
@@ -785,15 +785,15 @@ exit_Func_19: # exit function fibonaci
 	jr $ra
 
 Func_20: # function fibonaci_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,8 # make space for locals and temps
+	subi $sp,$sp,8 # make space for locals and temps
 	li $v0,4 # print string
 	la $a0,_str14
 	syscall 
-	li $v0,5# read int : n
+	li $v0,5 # read int : n
 	syscall 
 	addu $s1,$0,$v0
 	li $s0,0 # $s0=0
@@ -803,7 +803,7 @@ Label_56:
 	li $v0,4 # print string
 	la $a0,_str15
 	syscall 
-	li $v0,5# read int : n
+	li $v0,5 # read int : n
 	syscall 
 	addu $s1,$0,$v0
 	j Label_58
@@ -811,7 +811,7 @@ Label_57:
 Label_58:
 	li $t0,0
 	blt $s1,$t0,Label_59 # n<0
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
 	sw $s0,-12($fp) # save toy(global reg)
 	sw $s1,-8($fp) # save n(global reg)
@@ -839,11 +839,11 @@ exit_Func_20: # exit function fibonaci_test
 	jr $ra
 
 Func_21: # function mod
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,12 # $fp = old $sp
-	subiu $sp,$sp,12 # make space for locals and temps
+	subi $sp,$sp,12 # make space for locals and temps
 	lw $t0,0($fp) # load $t0 = n
 	lw $t1,-4($fp) # load $t1 = m
 	div $t2,$t0,$t1 # #reg249 = n/m
@@ -859,11 +859,11 @@ exit_Func_21: # exit function mod
 	jr $ra
 
 Func_22: # function gcd
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,12 # $fp = old $sp
-	subiu $sp,$sp,4 # make space for locals and temps
+	subi $sp,$sp,4 # make space for locals and temps
 	lw $t0,0($fp) # load $t0 = n
 	li $t1,0
 	bne $t0,$t1,Label_61 # n!=0
@@ -881,16 +881,16 @@ Label_62:
 Label_63:
 Label_64:
 	lw $t0,-4($fp) # load $t0 = m
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t0,0($sp)
 	lw $t1,0($fp) # load $t1 = n
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t1,0($sp)
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t0,0($sp)
 	jal Func_21
 	addu $t0,$0,$v1
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t0,0($sp)
 	jal Func_22
 	j exit_Func_22
@@ -902,7 +902,7 @@ exit_Func_22: # exit function gcd
 	jr $ra
 
 Func_23: # function isWrongGcd
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,12 # $fp = old $sp
@@ -931,23 +931,23 @@ exit_Func_23: # exit function isWrongGcd
 	jr $ra
 
 Func_24: # function gcd_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,12 # make space for locals and temps
+	subi $sp,$sp,12 # make space for locals and temps
 	li $v0,4 # print string
 	la $a0,_str17
 	syscall 
-	li $v0,5# read int : n
+	li $v0,5 # read int : n
 	syscall 
 	addu $s1,$0,$v0
-	li $v0,5# read int : m
+	li $v0,5 # read int : m
 	syscall 
 	addu $s2,$0,$v0
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s2,0($sp)
 	sw $s1,-8($fp) # save n(global reg)
 	sw $s2,-12($fp) # save m(global reg)
@@ -962,17 +962,17 @@ Label_70:
 	li $v0,4 # print string
 	la $a0,_str18
 	syscall 
-	li $v0,5# read int : n
+	li $v0,5 # read int : n
 	syscall 
 	addu $s1,$0,$v0
-	li $v0,5# read int : m
+	li $v0,5 # read int : m
 	syscall 
 	addu $s2,$0,$v0
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s2,0($sp)
 	sw $s0,-16($fp) # save toy(global reg)
 	sw $s1,-8($fp) # save n(global reg)
@@ -987,9 +987,9 @@ Label_70:
 	j Label_71
 Label_69:
 Label_71:
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s2,0($sp)
 	jal Func_22
 	li $v0,4 # print string
@@ -1006,11 +1006,11 @@ exit_Func_24: # exit function gcd_test
 	jr $ra
 
 Func_25: # function is_prime
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,8 # $fp = old $sp
-	subiu $sp,$sp,16 # make space for locals and temps
+	subi $sp,$sp,16 # make space for locals and temps
 	li $s1,2 # $s1=2
 	lw $t0,0($fp) # load $t0 = x
 	li $t1,2
@@ -1023,9 +1023,9 @@ Label_73:
 	li $s0,0 # $s0=0
 Label_74:
 	lw $t0,0($fp) # load $t0 = x
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t0,0($sp)
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
 	sw $s0,-16($fp) # save toy(global reg)
 	sw $s1,-12($fp) # save i(global reg)
@@ -1058,11 +1058,11 @@ exit_Func_25: # exit function is_prime
 	jr $ra
 
 Func_26: # function prime_factorization
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,8 # $fp = old $sp
-	subiu $sp,$sp,28 # make space for locals and temps
+	subi $sp,$sp,28 # make space for locals and temps
 	li $s0,2 # $s0=2
 	li $s2,0 # $s2=0
 	lw $t0,0($fp) # load $t0 = n
@@ -1077,7 +1077,7 @@ Label_77:
 Label_78:
 	li $s1,0 # $s1=0
 Label_79:
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s0,0($sp)
 	sw $s0,-12($fp) # save i(global reg)
 	sw $s1,-24($fp) # save fuck(global reg)
@@ -1090,9 +1090,9 @@ Label_79:
 	li $t1,1
 	bne $t0,$t1,Label_80 # @RET!=1
 	lw $t0,0($fp) # load $t0 = n
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t0,0($sp)
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s0,0($sp)
 	sw $s0,-12($fp) # save i(global reg)
 	sw $s1,-24($fp) # save fuck(global reg)
@@ -1127,9 +1127,9 @@ Label_84:
 	addu $t0,$t0,$t1 # toy = toy+1
 	li $s2,1 # $s2=1
 	lw $t2,0($fp) # load $t2 = n
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $t2,0($sp)
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s0,0($sp)
 	sw $t0,-20($fp) # spill toy
 	sw $s0,-12($fp) # save i(global reg)
@@ -1181,15 +1181,15 @@ exit_Func_26: # exit function prime_factorization
 	jr $ra
 
 Func_27: # function prime_factorization_test
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,8 # make space for locals and temps
+	subi $sp,$sp,8 # make space for locals and temps
 	li $v0,4 # print string
 	la $a0,_str23
 	syscall 
-	li $v0,5# read int : n
+	li $v0,5 # read int : n
 	syscall 
 	addu $s1,$0,$v0
 	li $s0,0 # $s0=0
@@ -1199,7 +1199,7 @@ Label_91:
 	li $v0,4 # print string
 	la $a0,_str24
 	syscall 
-	li $v0,5# read int : n
+	li $v0,5 # read int : n
 	syscall 
 	addu $s1,$0,$v0
 	j Label_93
@@ -1212,7 +1212,7 @@ Label_93:
 	li $v0,4 # print string
 	la $a0,_str25
 	syscall 
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
 	jal Func_26
 exit_Func_27: # exit function prime_factorization_test
@@ -1223,7 +1223,7 @@ exit_Func_27: # exit function prime_factorization_test
 	jr $ra
 
 Func_28: # function iswrong
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,8 # $fp = old $sp
@@ -1260,18 +1260,18 @@ exit_Func_28: # exit function iswrong
 	jr $ra
 
 Func_29: # function main
-	subiu $sp,$sp,8 # make space for $fp and $ra
+	subi $sp,$sp,8 # make space for $fp and $ra
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addiu $fp,$sp,4 # $fp = old $sp
-	subiu $sp,$sp,12 # make space for locals and temps
+	subi $sp,$sp,12 # make space for locals and temps
 	li $v0,4 # print string
 	la $a0,_str26
 	syscall 
-	li $v0,12# read char : kind
+	li $v0,12 # read char : kind
 	syscall 
 	addu $s1,$0,$v0
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
 	sw $s1,-8($fp) # save kind(global reg)
 	jal Func_28
@@ -1284,12 +1284,12 @@ Label_101:
 	li $v0,4 # print string
 	la $a0,_str27
 	syscall 
-	li $v0,12# read char : kind
+	li $v0,12 # read char : kind
 	syscall 
 	addu $s1,$0,$v0
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	subiu $sp,$sp,4
+	subi $sp,$sp,4
 	sw $s1,0($sp)
 	sw $s0,-12($fp) # save toy(global reg)
 	sw $s1,-8($fp) # save kind(global reg)

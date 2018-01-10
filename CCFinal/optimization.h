@@ -82,9 +82,11 @@ void BaseBlock::printQuad(quadCode& qc) {
 	quadCode newqc = qc;
 	newQuads.push_back(newqc);
 #ifdef NEW_QUAD_OUT
-	OptimizedQuad << setw(20) << qc.op << setw(20) << qc.left
-		<< setw(20) << qc.right << setw(20) << qc.result
-		<< endl;
+	if (qc.op != "dagBegin") {
+		OptimizedQuad << setw(20) << qc.op << setw(20) << qc.left
+			<< setw(20) << qc.right << setw(20) << qc.result
+			<< endl;
+	}
 #endif // NEW_QUAD_OUT
 }
 //将集合a和集合b的结果并起来存入集合c
@@ -284,18 +286,6 @@ void BaseBlock::genUseDefSet() {
 				enterUseSet(quadTable[i].left);
 		}
 	}
-	//cout << "---use---" << endl;
-	//set<string>::iterator ite = useSet.begin();
-	//while (ite != useSet.end()) {
-	//	cout << *ite << endl;
-	//	ite++;
-	//}
-	//ite = defSet.begin();
-	//cout << "---def---" << endl;
-	//while (ite != defSet.end()) {
-	//	cout << *ite << endl;
-	//	ite++;
-	//}
 }
 //在表节点表中查询相应变量是否存在，按照变量名
 int BaseBlock::searchInNodeTable(string name) {
