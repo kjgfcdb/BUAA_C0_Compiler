@@ -1,0 +1,143 @@
+const int ch=0;
+const char chc='a';
+const char sym='-';
+const int integer=+7;
+int mark[20];
+int stack[20];
+int num[20];
+int N1;
+int a[4];
+int c;
+int operation()
+{
+    int a,b,c,d;
+     a=-2*(2+3*(7+6*(4+2*(1+8*(4+8*(5+2))))))+3*(2+3*(5+6*(4+3*(2+8*(4+8*(1+2))))));
+     b=(a+1)*16/4+(2-5)*a;
+     c=199;
+     d=a+b-c*2;
+     return (d);
+}
+int lockk()
+{
+    int a,b,c,d,e,f,g;
+    a=1;
+    b=2;
+    c=3;
+    d=4;
+    e=5;
+    f=7;
+    g=8;
+    if(c==3)
+    {
+        switch(d+1)
+    {
+        case 2:printf("err");
+        case 3:printf("err");
+        case 4:printf("err");
+        case 5: {printf(""); d=10;}
+        case 6:printf("err");
+        default:;
+    }
+
+    }
+    if(d==10)
+    {
+        printf("1 check case ok");
+        return (1);
+    }
+    return (0);
+
+}
+void check_array()
+{
+    int flag,i,tot;
+    flag=1;
+    i=0;
+    a[0]=10;
+    a[1]=a[0]*2;
+    a[2]=c+7;
+    a[3]=-199;
+    for (tot=0;i<=3;tot=tot+1)
+    {
+    switch(i)
+    {
+        case 0:{if (a[i]!=10) printf("err");}
+        case 1:{if (a[i]!=20) printf("err");}
+        case 2:{if (a[i]!=14) printf("err");}
+        case 3: {if (a[i]!=-199) printf("err");}
+        default: ;
+    }
+    i=i+1;
+    }
+    return;
+
+}
+int rank(int m, int n)
+{
+	int i,k,tot;
+	if(n==0)
+	{
+		k=0;
+    for (tot=0;k<N1;tot=tot+1)
+	{
+		printf(stack[k]);
+		k=k+1;
+	}
+
+		printf(".");
+		m=0;
+		return (0);
+	}
+	i=1;
+    for (tot=0;i<=N1;tot=tot+1)
+	{
+		if(mark[i]==0)
+		{
+			mark[i]=1;
+			stack[m]=num[i-1];
+			rank(m+1,n-1);
+			mark[i]=0;
+		}
+		i=i+1;
+	}
+}
+
+void main()
+{
+    int check;
+    int a1,a2,a3,a4;
+    c=7;
+    check=operation();
+    if(check==3720)
+    {
+        printf("0 check operation ok");
+    }
+    check=lockk();
+    check_array();
+    if(check)
+        printf("2 check return ok");
+    if(c==7)
+        printf("3 check globel ok");
+    if(c)
+    {
+        if(c-7)
+        {
+            printf("err in if");
+        }
+        if(1)
+        {
+            if(-1)
+            {
+                printf("4 check if ok");
+            }
+        }
+    }
+
+    N1=4;
+    scanf(a1,a2,a3,a4);
+    num[0]=a1;
+    num[1]=a2;
+    num[2]=a3;
+    num[3]=a4;
+	rank(0,N1);
+}

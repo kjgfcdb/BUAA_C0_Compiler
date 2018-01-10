@@ -1,0 +1,76 @@
+Calculate test begin
+16
+66
+-84
+-1027
+-6
+19298
+printf test start!
+ !#$%&'()*+,-./0123456789:;<=>? @ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}
+Max & Min integer:2147483647
+-2147483648
+assign test start!
+-15
+233
+Q
++
+Q
+print char:*
+a
+Q
+print expression
+-1
+96
+57
+-1
+local or global?
+local
+case sensitive!
+scanf test start! Please input 1 int then 1 char then another int!
+
+The first one:123
+The second one:a
+Global is: 666
+start while test!
+in circle1
+in circle2
+in circle3
+in circle4
+in circle5
+in circle6
+in circle7
+in circle8
+in circle9
+in circle10
+while test finished!\nbegin switchtest!
+reached 1
+get result:0
+into to brace
+get result:50
+in circle1
+in circle2
+in circle3
+in circle4
+in circle5
+in circle6
+in circle7
+in circle8
+in circle9
+in circle10
+get result:233
+default reached!
+get result:0
+start relationcover!
+same?
+still same?
+EQU is good
+maybe this is ok
+NEQ is good
+Greater is good
+Less is good
+GTE is good
+LTE is good
+you can see this for count =77
+a
+start recursive!
+6765

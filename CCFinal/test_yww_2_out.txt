@@ -1,0 +1,9 @@
+Please input your choice number:(<0>quit <1>Test 1 <2>Test 2 <3>Test 3)
+Test 2:
+left_index=5
+right_index=11
+Subarray sum=47
+Test 2 passed!
+Quit Test...
+
+

@@ -1,0 +1,8 @@
+The result of case i is done!
+The result of case c is done!
+result one is:
+40320
+result two is:24
+no result!
+
+

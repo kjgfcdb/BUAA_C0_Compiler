@@ -1,0 +1,13 @@
+int a[100];
+void main(){
+	int t,i;
+	t = 0;
+	i = 0;
+	a[t] = 10;
+	t = i;
+	i = i+1;
+	a[t] = t;
+	printf(t);
+	printf(a[t]);
+	return;
+}

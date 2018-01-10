@@ -1,0 +1,47 @@
+void f(int a,int b){
+	int t,tot;
+	t = a;
+	a = b;
+	b = t;
+	printf(a);
+	printf(b);
+	t = a;
+	a = b;
+	b = t;
+	printf(a);
+	printf(b);
+	t = a;
+	a = b;
+	b = t;
+	printf(a);
+	printf(b);
+}
+void g(int a,int b){
+	int t,tot;
+	t = a;
+	a = b;
+	b = t;
+	printf(a);
+	printf(b);
+	t = a;
+	a = b;
+	b = t;
+	printf(a);
+	printf(b);
+}
+void swap(int a,int b){
+	int t;
+	t = a;
+	a = b;
+	b = t;
+	printf(a);
+	printf(b);
+}
+void main(){
+    printf("swap3 test");
+	f(0,1);
+    printf("swap2 test");
+    g(-1,1);
+    printf("swap test");
+    swap(2,3);
+}

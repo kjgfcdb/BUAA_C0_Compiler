@@ -1,0 +1,99 @@
+const int i=10; 
+const char c1='a', c2='+', c_3='5';
+
+int a[10], b;
+
+void swap(int a,int b)
+{ 
+    int tmp;
+    printf("a=",a);
+    printf("b=",b);
+    tmp = a;
+    a = b;
+    b = tmp;
+    printf("a=",a);
+    printf("b=",b);
+}
+
+void helloworld() 
+{
+    printf("Hello World!");
+    return ;
+}
+
+int mod(int a,int b)
+{
+    int tot;
+    if (a>=b)
+    {
+        for (tot=0;a>=b;tot=tot+1){
+            a = a-b;
+        }
+    }
+    return (a);
+}
+
+int isprime(int n)
+{
+    int i, m,tot;
+    if(n==1)
+        return(0);
+    i = 2;
+    m = n/2;
+    if(i<=m)
+    {
+        for (tot=0;i<=m;tot=tot+1){
+            if(mod(n,i)==0) return(0);
+            i = i + 1;
+        }
+    }
+    return (1);
+}
+
+int sum(int n)
+{
+    if(n>0)
+        return (n+sum(n-1));
+    return (0);
+}
+
+void main()
+{
+    const int r = 15;
+    int i, j, n, grade;
+    int c1, c2;
+    
+    helloworld();
+    
+    a[1] = 9; 
+    printf(-mod(38,3) + 4*2*3 + 34 - 13/2 + isprime(a[1]) - r); 
+    
+    {
+        i = 2;
+        {
+            {
+                printf("i=",i);
+                {
+                }
+                ;
+            }
+        }
+    }
+    
+    scanf(c1, c2); 
+    swap(c1, c2);
+    
+    scanf(grade);
+    switch(grade) 
+    {
+        case 1: printf("fail");
+        case 2: printf("fail");
+        case 3: printf("pass");
+        case 4: printf("good");
+        case 5: printf("excellent");
+        default: printf("wrong!");
+    }
+        
+    scanf(n);
+    printf(sum(n)); 
+}

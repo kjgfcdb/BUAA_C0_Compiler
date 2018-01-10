@@ -1,0 +1,163 @@
+const int const_a=+1,const_b=-20;
+const int const_zero=0;
+const char const_c='c',const_d='d';
+const char const_plus='+', const_minus='-';
+const char const_mult='*', const_div='/';
+const char const_alpha='a', const_captal_alpha='A';
+const char const_num_zero='0', const_num_not_zero='1';
+const char const_underline='_';
+int variable_a,variable_b;
+int variable_c[3];
+char variable_d,variable_e[10];
+char variable_f[100];
+int fib_work[100];
+int slower_fib(int n) {
+	if (n>30) {
+		printf(" n is too big(>30)! ");
+		return (0);
+	} else {
+		if (n<0) {
+			printf(" n is negative! ");
+			return (0);
+		} else {
+			if (n<=1) {
+				return (n);
+			} else {
+				return (slower_fib(n-1)+slower_fib(n-2));
+			}
+		}
+	}
+}
+void faster_fib_init(){
+	int i;
+	for (i=0;i<100;i=i+1) {
+		fib_work[i] = 0;
+	}
+}
+void faster_fib(int n) {
+	if (n<0) return;
+
+	if (n<=1) fib_work[n] = n;
+	else {
+		faster_fib(n-1);
+		fib_work[n] = fib_work[n-1]+fib_work[n-2];
+	}
+}
+char singleChr(){
+    return ('c');
+}
+void do_nothing(char param_c,int param_d)
+{
+    printf(" do nothing! ");
+    printf(" print const_a ",const_a);
+    printf(" print param_c ",param_c);
+	printf(" print param_d ",param_d);
+	return;
+}
+void printStr() {
+    printf(" check string:");
+    printf(" !#$%&()*+,-./0123456789:;<=>?@");
+    printf(" {|}~");
+    printf(" [\]^_`");
+    printf(" abcdefghijklmnopqrstuvwxyz");
+	printf(" ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	return;
+	printf(" impossible output!!! ");
+}
+void fib_test() {
+	int a,b;
+    a=10;
+    printf("fib(10)==");
+    b=slower_fib(a);
+	printf("",b);
+    scanf(a);
+	printf("input is");
+	printf(a);
+	faster_fib_init();
+	faster_fib(a);
+	b = fib_work[a];
+	printf("fib(a) is (by faster fib)");
+	printf(b);
+}
+void switch_test(){
+	int a,b;
+	printf("Please input two numbers of binary system");
+    scanf(a,b);
+    switch (a) {
+		case 0:printf("a = 0");
+		case 1:printf("a = 1");
+        default:printf("a doesnt' belong to binary system!");
+	}
+	switch (b) {
+		case 0:printf("b = 0");
+		case 1:printf("b = 1");
+        default:printf("b doesnt' belong to binary system!");
+	}
+	switch(a+b){
+		case 0:printf("a + b = 00");
+		case 1:printf("a + b = 01");
+		case 2:printf("a + b = 10");
+		default:printf("wrong input!");
+	}
+}
+void expr_test() {
+	int a;
+	a = 2333;
+	printf("expression test starts!");
+	variable_f[0] = 'f';
+	printf(-1*2+(3/1)+slower_fib(3)-'a'+100+a-variable_f[0]);
+	printf(singleChr());
+	printf(singleChr()+1);
+}
+void bubble_sort() {
+	int n,i,j;
+	int temp;
+	int data[100];
+	printf("Please input the length of numbers(<100)");
+	scanf(n);
+	for (i=0;i<n;i=i+1){
+		scanf(temp);
+		data[i] = temp;
+	}
+	for (i=1;i<n;i=i+1) {
+		for (j=0;j<n-i;j=j+1) {
+			if (data[j]<data[j+1]){
+				if (j+1<n){
+					temp = data[j];
+					data[j] = data[j+1];
+					data[j+1] = temp;
+				}
+			}
+		}
+	}
+	printf("------");
+	for (i=0;i<n;i=i+1){
+		printf(data[i]);
+	}
+}
+void main()
+{
+    const char main_char_const='m';
+    char main_char_variable;
+	int a;
+	printf("even and odd test");
+	scanf(a);
+    if ((a-2*(a/2))) {
+        printf("a is odd ");        
+    } else {
+        printf("a is even ");
+	}
+	if (a>=0) {
+		printf("a is not negative");
+	} else {
+		printf("a is negative");
+	}
+	fib_test();
+	switch_test();
+	expr_test();
+	printStr();
+	do_nothing('c',10);
+	bubble_sort();
+    ;
+    return;
+}

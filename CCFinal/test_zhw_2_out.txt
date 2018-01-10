@@ -1,0 +1,8 @@
+The result of case i is done!
+The result of case c is done!
+result one is:
+6
+result two is:1
+The sum of numbers between two results is:21
+
+

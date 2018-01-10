@@ -1,0 +1,22 @@
+Please input Test Type:E(Easy), (M)Middle, H(Hard): 
+1
+/
+define test passed
+operator test passed
+dowhile test passed
+condition test passed
+ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz
+!#$%&'()*+,-./:;<=>?@[]^_`{|}~
+miscellaneous test passed
+prime_factorization: Please input a unsigned positive integer(<2^31-1) ?
+The factor of n is 
+2
+*
+3
+*
+3
+*
+3
+*
+19
+

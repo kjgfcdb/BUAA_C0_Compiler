@@ -1,0 +1,22 @@
+int tot[300];
+void func(int x){
+	int a,t;
+	a = x;
+	t = a;
+	a = a+1;
+	t = a;
+	a = a+1;
+	printf("t ",t);
+	printf("a ",a);
+}
+void main(){
+	int a;
+	a = 100;
+	printf(a);
+	a=200;
+	printf(a);
+	tot[a] = 2333;
+	printf(tot[a]);
+	scanf(a);
+	func(a);
+}

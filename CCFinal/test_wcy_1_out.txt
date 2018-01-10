@@ -1,0 +1,8 @@
+no errors seem found. 
+m! = 720
+repeat m! : 720
+n! = 2
+repeat n! : 2
+C(m, n) = 15
+
+

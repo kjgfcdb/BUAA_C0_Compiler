@@ -1,0 +1,16 @@
+INPUT YOUR OPCODE,0 : function1_x , 1: function2
+input a char and input postion(num < 10) 
+a
+H
+E
+a
+L
+O
+W
+W
+O
+R
+L
+D
+
+

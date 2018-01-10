@@ -1,0 +1,8 @@
+Please input Test Type:E(Easy), (M)Middle, H(Hard): 
+dowhile test passed
+condition test passed
+ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz
+!#$%&'()*+,-./:;<=>?@[]^_`{|}~
+GCD: Please input two unsigned positive integer ?
+The gcd's answer is 3
+
