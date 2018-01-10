@@ -599,7 +599,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 		}
 		//*输出*将DAG导出为四元式
 		while (!dagNodeQueue.empty()) {
-			int lopId = curDagId[dagNodeQueue.back()->quadId][0];
+			int lopId = curDagId[dagNodeQueue.back()->quadId][0];//左右操作数的值
 			int ropId = curDagId[dagNodeQueue.back()->quadId][1];
 			string result;
 			int resultIdx = searchInNodeTable(dagNodeQueue.back()->dagId);

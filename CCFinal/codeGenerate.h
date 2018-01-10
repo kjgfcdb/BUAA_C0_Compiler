@@ -227,19 +227,20 @@ public:
 	}
 	//根据给定的四元式操作符quadOpe，将ope填上正确的临时寄存器的值，表示分到了该临时寄存器
 	void fillOperand(string& ope, string& quadOpe, set<string> usedReg) {
-		if (isConstant(quadOpe)) { // 常数情况
-			ope = regAlloc("", usedReg, false);
-			emit("li", ope, quadOpe, "");
-		}
-		else if (quadOpe == "@RET") { // RET情况
-			ope = regAlloc("", usedReg, false);
-			emit("addu", ope, "$0", "$v1", "");
-		}
-		else {
-			if (findInRegPool(quadOpe) == "")
+		ope = findInRegPool(quadOpe);
+		if (ope == "") {
+			if (isConstant(quadOpe)) {
+				ope = regAlloc("", usedReg, false);
+				emit("li", ope, quadOpe, "");
+			}
+			else if (quadOpe == "@RET") {
+				ope = regAlloc("", usedReg, false);
+				emit("addu", ope, "$0", "$v1", "");
+			}
+			else {
 				ope = regAlloc(quadOpe, usedReg, true);
-			else
-				ope = findInRegPool(quadOpe);
+			}
+			regPool[getIntValue(false, ope.substr(2))].id = quadOpe;
 		}
 	}
 	//根据四元式的result域，返回其相应的寄存器
@@ -334,15 +335,15 @@ public:
 		cout << ".text" << endl;
 		//为常量赋值，常量指针gp充当基地址
 		cout << "# initialize global constant" << endl;
-		cout << "addu $gp,$sp,$0 # let $gp=$sp to get more space" << endl;
-		cout << "subi $gp,$gp," << (btab[0].isize * 4) << " # make space for global variabel and constant" << endl;
+		cout << "\t" << "addu $gp,$sp,$0 # let $gp=$sp to get more space" << endl;
+		cout << "\t" << "subi $gp,$gp," << (btab[0].isize * 4) << " # make space for global variabel and constant" << endl;
 		cout << "# initialize global constant" << endl;
 		while (true) {//为全局常量赋初始值
 			if (quadCodeTable[i].op == "const") {
-				cout << "li $t0," << quadCodeTable[i].result << " # "
+				cout << "\t" << "li $t0," << quadCodeTable[i].result << " # "
 					<< quadCodeTable[i].right << "=" << quadCodeTable[i].result << endl;
 				//由于全局常量的声明一定在程序的前面，所以它们的地址就是索引i乘以4
-				cout << "sw $t0," << (i * 4) << "($gp)" << endl;
+				cout << "\t" << "sw $t0," << (i * 4) << "($gp)" << endl;
 			}
 			else break;
 			i++;
@@ -352,8 +353,8 @@ public:
 			if (quadCodeTable[j].right == "()")  //函数
 				func2num[quadCodeTable[j].left] = funcNum++;//更新函数索引
 		}
-		cout << "addu $sp,$gp,$0 # update $sp" << endl;
-		cout << "j " << funcLabel(func2num["main"]) << " # jump to main function" << endl;//跳转到主函数开始执行
+		cout << "\t" << "addu $sp,$gp,$0 # update $sp" << endl;
+		cout << "\t" << "j " << funcLabel(func2num["main"]) << " # jump to main function" << endl;//跳转到主函数开始执行
 		while (i < quadCodeTable.size() && !isQuadFunc(quadCodeTable[i])) //跳转到函数出现
 			i++;
 		while (i < quadCodeTable.size()) {
@@ -367,7 +368,6 @@ public:
 				curFuncIdx = cgGlobalSearch(func_name);//找到此函数对应的符号表项索引
 				for (int k = 0; k < globalRegPool.size(); k++)
 					globalRegPool[k] = { false,"","",false };
-				cout << endl;
 				labelInstr(funcLabel(func2num[func_name]), "function " + func_name);//产生函数下标
 				//$sp下降，继续为保留空间留出位置，所谓保留空间，是指$ra与$fp等在函数调用的过程需要保存的数据
 				emit("subi", "$sp", "$sp", int2str(MEM_SAVE * 4), " # make space for $fp and $ra");
