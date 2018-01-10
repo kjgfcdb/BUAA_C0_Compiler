@@ -576,8 +576,9 @@ public:
 						regPool[getIntValue(false, dest.substr(2))].dirty = true;
 				}
 			}
-			else if (quadCodeTable[i].op == "printInt") {
-				emit("li", "$v0", "1", "# print int : " + quadCodeTable[i].left);
+			else if (quadCodeTable[i].op == "printInt" || quadCodeTable[i].op=="printChr") {
+				if (quadCodeTable[i].op=="printInt") emit("li", "$v0", "1", "# print int : " + quadCodeTable[i].left);
+				else emit("li", "$v0", "11", " # print char : " + quadCodeTable[i].left);
 				if (isConstant(quadCodeTable[i].left)) {  //针对数字常量情况
 					emit("li", "$a0", quadCodeTable[i].left, "");
 				}
@@ -595,22 +596,6 @@ public:
 			else if (quadCodeTable[i].op == "printStr") {//输出字符串
 				emit("li", "$v0", "4", " # print string");
 				emit("la", "$a0", "_" + quadCodeTable[i].left.substr(1), "");
-				emit("syscall", "");
-			}
-			else if (quadCodeTable[i].op == "printChr") {//输出字符
-				emit("li", "$v0", "11", " # print char : " + quadCodeTable[i].left);
-				if (quadCodeTable[i].left.size() == 3 && quadCodeTable[i].left[0] == '\'') { //针对字符常量情况
-					emit("li", "$a0", quadCodeTable[i].left, "");
-				}
-				else if (quadCodeTable[i].left == "@RET") {
-					emit("addu", "$a0", "$0", "$v1", "");
-				}
-				else {//针对寄存器传值情况
-					if (findInRegPool(quadCodeTable[i].left) == "") //寄存器池中没有，必须访问内存
-						emit("lw", "$a0", getItemAddr(quadCodeTable[i].left), "");
-					else //寄存器池中已经有，直接使用
-						emit("addu", "$a0", "$0", findInRegPool(quadCodeTable[i].left), "");
-				}
 				emit("syscall", "");
 			}
 #ifdef PRINTLN

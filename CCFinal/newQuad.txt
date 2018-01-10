@@ -1,0 +1,1301 @@
+----------------------------------DAG--------------------------------------
+               const                 int                cst1                   1
+               const                 int                cst2                   2
+               const                 int                cst3                   3
+               const                char                csta                  97
+               const                char                cstb                  98
+               const                char                cstc                  99
+                 var                 int                 g_a                    
+                 var                 int                 g_b                    
+            arrayVar                 int               g_arr                2048
+            arrayVar                char              g_stra                1024
+            arrayVar                char              g_strb                2048
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void        const_define                  ()                    
+               const                 int                   a                   1
+               const                 int                   b                   0
+               const                 int                   c                  -1
+               const                char               cst23                 120
+               const                char               cst24                 122
+               const                char             constA0                  65
+               const                char               cstA1                  49
+               const                char             cst_div                  47
+            printInt                   a                                        
+             println                                                            
+            printChr             cst_div                                        
+             println                                                            
+             endFunc        const_define                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void   const_define_test                  ()                    
+                call        const_define                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc   const_define_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void          var_define                  ()                    
+                 var                 int                   a                    
+            arrayVar                 int                 arr                   1
+                 var                 int                  _a                    
+            arrayVar                 int                _arr                   2
+                 var                 int                  a1                    
+            arrayVar                 int                arr1                   3
+                 var                char                   b                    
+            arrayVar                char                strb                   1
+                 var                char                  _b                    
+            arrayVar                char               _bstr                   2
+                 var                char                 _b1                    
+            arrayVar                char              _bstr1                   3
+                 var                 int                   c                    
+                 var                char                   z                    
+             endFunc          var_define                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void     var_define_test                  ()                    
+                call          var_define                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc     var_define_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void              define                  ()                    
+               const                 int                int1                   1
+               const                char               cst24                 122
+               const                char             constA0                  65
+                 var                 int                val1                    
+                 var                char                   b                    
+            arrayVar                char                strb                   1
+             endFunc              define                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void         define_test                  ()                    
+                call     var_define_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call   const_define_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call              define                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr               .str0                                        
+             println                                                            
+             endFunc         define_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void            operator                  ()                    
+                 var                 int                   a                    
+                 var                 int                   b                    
+                 var                 int                   c                    
+                 var                 int                   d                    
+                 var                 int                   e                    
+                 var                 int                   f                    
+                   -                   1                   0              #reg17
+                   *                   5                   6              #reg14
+                   /                   1                   1              #reg10
+                   -                   0                   4               #reg5
+                   /               #reg5                   4               #reg9
+                   +                   1                   2               #reg3
+                   *               #reg3                   3             #reg232
+                   *                   3                   1               #reg4
+                   +             #reg232               #reg4             #reg233
+                   -             #reg233               #reg9             #reg234
+                   +             #reg234              #reg10               #reg8
+                   *               #reg8                   3              #reg12
+                   +                   0               #reg8             #reg235
+                   +             #reg235              #reg12             #reg236
+                   +             #reg236               #reg4             #reg237
+                   -             #reg237               #reg9             #reg238
+                   +             #reg238              #reg14              #reg11
+                   *              #reg11                   0              #reg16
+                   -                   0               #reg8             #reg239
+                   +             #reg239              #reg16             #reg240
+                   -             #reg240              #reg17              #reg15
+             endFunc            operator                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void       operator_test                  ()                    
+                call            operator                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr               .str1                                        
+             println                                                            
+             endFunc       operator_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void              string                  ()                    
+            printStr               .str2                                        
+             println                                                            
+            printStr               .str3                                        
+             println                                                            
+             endFunc              string                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void         string_test                  ()                    
+                call              string                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc         string_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void             dowhile                  ()                    
+                 var                 int                   i                    
+                 var                 int                 toy                    
+                   =                 100                                       i
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_0:                                                            
+                  >=                   i                  50                    
+                  BZ             Label_1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   /                   i                   2              #reg22
+                   =              #reg22                                       i
+                GOTO             Label_2                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_1:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_2:                                                            
+                   <                   i                  50                    
+                  BZ             Label_3                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +                   i                  10             #reg241
+                   /             #reg241                  10              #reg25
+                   =              #reg25                                       i
+                GOTO             Label_4                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_3:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_4:                                                            
+                   +                 toy                   1                 toy
+                   <                   i                  10                    
+                  BZ             Label_0                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_5:                                                            
+                   +                 toy                   1                 toy
+                   -                   i                   1              #reg29
+                   =              #reg29                                       i
+            printStr               .str4                                        
+             println                                                            
+                  ==                   0                   0                    
+                  BZ             Label_5                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc             dowhile                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void        dowhile_test                  ()                    
+                call             dowhile                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc        dowhile_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void         ifcondition                  ()                    
+                 var                 int                   a                    
+                 var                 int         rightnumber                    
+                   =                   0                             rightnumber
+                  ==                   1                   1                    
+                  BZ             Label_6                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +         rightnumber                   1              #reg35
+                   =              #reg35                             rightnumber
+                GOTO             Label_7                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_6:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_7:                                                            
+                   >                   2                   1                    
+                  BZ             Label_8                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +         rightnumber                   1              #reg39
+                   =              #reg39                             rightnumber
+                GOTO             Label_9                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_8:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            Label_9:                                                            
+                   =                   0                                       a
+                   <                   0                   1                    
+                  BZ            Label_10                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +         rightnumber                   1              #reg43
+                   =              #reg43                             rightnumber
+                GOTO            Label_11                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_10:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_11:                                                            
+                  !=                   a                   1                    
+                  BZ            Label_12                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +         rightnumber                   1              #reg46
+                   =              #reg46                             rightnumber
+                GOTO            Label_13                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_12:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_13:                                                            
+                  >=                   a                   0                    
+                  BZ            Label_14                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +         rightnumber                   1              #reg49
+                   =              #reg49                             rightnumber
+                GOTO            Label_15                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_14:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_15:                                                            
+                  <=                   a                   0                    
+                  BZ            Label_16                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +         rightnumber                   1              #reg52
+                   =              #reg52                             rightnumber
+                GOTO            Label_17                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_16:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_17:                                                            
+                   *                   1                   3              #reg55
+                   +                   1                   1             #reg242
+                   +             #reg242                   1             #reg243
+                   +             #reg243              #reg55              #reg54
+                  !=         rightnumber              #reg54                    
+                  BZ            Label_18                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr               .str5                                        
+             println                                                            
+                GOTO            Label_19                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_18:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_19:                                                            
+                  !=         rightnumber         rightnumber                    
+                  BZ            Label_20                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr               .str6                                        
+             println                                                            
+                GOTO            Label_21                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_20:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_21:                                                            
+             endFunc         ifcondition                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int  switchcodintionans                  ()                    
+               param                 int                   x                    
+                   =                   x                                  #reg58
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_23:                                                            
+                  ==              #reg58                   1                    
+                  BZ            Label_24                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   2                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_22                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_24:                                                            
+                  ==              #reg58                   2                    
+                  BZ            Label_25                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   3                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_22                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_25:                                                            
+                  ==              #reg58                   3                    
+                  BZ            Label_26                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   4                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_22                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_26:                                                            
+                GOTO            Label_22                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_22:                                                            
+                 ret                   5                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc  switchcodintionans                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int     switchcodintion                  ()                    
+                 var                 int                   i                    
+                 var                 int         rightnumber                    
+                 var                 int                 toy                    
+                   =                   1                                       i
+                   =                   0                             rightnumber
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_27:                                                            
+                   +                   i                   1              #reg66
+                push                   i                                        
+                call  switchcodintionans                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  ==              #reg66                @RET                    
+                  BZ            Label_28                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +         rightnumber                   1              #reg69
+                   =              #reg69                             rightnumber
+                GOTO            Label_29                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_28:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_29:                                                            
+                   +                 toy                   1                 toy
+                   +                   i                   1              #reg70
+                   =              #reg70                                       i
+                  >=              #reg70                   5                    
+                  BZ            Label_27                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=         rightnumber                   4                    
+                  BZ            Label_30                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr               .str7                                        
+             println                                                            
+                GOTO            Label_31                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_30:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_31:                                                            
+                  !=         rightnumber                   0                    
+                  BZ            Label_32                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   i                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_33                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_32:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_33:                                                            
+            printStr               .str8                                        
+             println                                                            
+             endFunc     switchcodintion                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void           condition                  ()                    
+               const                 int            intermax                   5
+                 var                 int                iter                    
+                 var                 int                 toy                    
+                   =                   0                                    iter
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_34:                                                            
+                   =                iter                                  #reg79
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_36:                                                            
+                  ==              #reg79                   0                    
+                  BZ            Label_37                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=                iter                   0                    
+                  BZ            Label_38                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr               .str9                                        
+             println                                                            
+                GOTO            Label_39                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_38:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_39:                                                            
+                GOTO            Label_35                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_37:                                                            
+                  ==              #reg79                   1                    
+                  BZ            Label_40                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=                iter                   1                    
+                  BZ            Label_41                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str10                                        
+             println                                                            
+                GOTO            Label_42                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_41:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_42:                                                            
+                GOTO            Label_35                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_40:                                                            
+                  ==              #reg79                   2                    
+                  BZ            Label_43                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=                iter                   2                    
+                  BZ            Label_44                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str11                                        
+             println                                                            
+                GOTO            Label_45                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_44:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_45:                                                            
+                GOTO            Label_35                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_43:                                                            
+                GOTO            Label_35                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_35:                                                            
+                   +                 toy                   1                 toy
+                   +                iter                   1              #reg86
+                   =              #reg86                                    iter
+                  >=              #reg86            intermax                    
+                  BZ            Label_34                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc           condition                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void      condition_test                  ()                    
+                call         ifcondition                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call     switchcodintion                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call           condition                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str12                                        
+             println                                                            
+             endFunc      condition_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void       miscellaneous                  ()                    
+                 var                 int                   _                    
+                 var                 int                   a                    
+            arrayVar                 int               array                  23
+                 var                 int                   i                    
+                 var                 int               endid                    
+                 var                 int                 toy                    
+                 var                char                 ch1                    
+            arrayVar                char                 buf                 256
+                   =                   0                                       i
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_46:                                                            
+                 []=                   i                   i               array
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +                 toy                   1                 toy
+                   +                   i                   1              #reg95
+                   =              #reg95                                       i
+                  >=              #reg95                  23                    
+                  BZ            Label_46                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   =                 'a'                                     ch1
+                   =                   0                                       i
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_47:                                                            
+                 []=                   i                 ch1                 buf
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +                 toy                   1                 toy
+                   +                   i                   1             #reg104
+                   +                 ch1                   1             #reg103
+                   =             #reg103                                     ch1
+                   =             #reg104                                       i
+                  >=             #reg103                 127                    
+                  BZ            Label_47                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   =                   i                                   endid
+                   =                   0                                       _
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_48:                                                            
+                   /                   2                   1             #reg111
+                   *                   _                   1             #reg244
+                   -             #reg244                   _             #reg245
+                   -             #reg245                   1             #reg246
+                   +             #reg246             #reg111             #reg247
+                   -             #reg247                   1             #reg248
+                   /             #reg248                   2             #reg110
+                 []=             #reg110                 'a'                 buf
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +                 toy                   1                 toy
+                   +                   _                   1             #reg113
+                   =             #reg113                                       _
+                  >=             #reg113               endid                    
+                  BZ            Label_48                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 =[]                 buf                   0             #reg117
+                  ==             #reg117                 'a'                    
+                  BZ            Label_49                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str13                                        
+             println                                                            
+                GOTO            Label_50                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_49:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_50:                                                            
+             endFunc       miscellaneous                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void  miscellaneous_test                  ()                    
+                call       miscellaneous                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc  miscellaneous_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int            fibonaci                  ()                    
+               param                 int                   n                    
+                   =                   n                                 #reg119
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_52:                                                            
+                  ==             #reg119                   0                    
+                  BZ            Label_53                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   0                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_51                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_53:                                                            
+                  ==             #reg119                   1                    
+                  BZ            Label_54                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_51                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_54:                                                            
+                  ==             #reg119                   2                    
+                  BZ            Label_55                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_51                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_55:                                                            
+                GOTO            Label_51                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_51:                                                            
+                   -                   n                   1             #reg123
+                push             #reg123                                        
+                call            fibonaci                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   -                   n                   2             #reg125
+                   =                @RET                                 #reg124
+                push             #reg125                                        
+                call            fibonaci                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   +             #reg124                @RET             #reg124
+                 ret             #reg124                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc            fibonaci                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void       fibonaci_test                  ()                    
+                 var                 int                   n                    
+                 var                 int                 toy                    
+            printStr              .str14                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   n                                        
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_56:                                                            
+                   <                   n                   0                    
+                  BZ            Label_57                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str15                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   n                                        
+                GOTO            Label_58                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_57:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_58:                                                            
+                  >=                   n                   0                    
+                  BZ            Label_59                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                push                   n                                        
+                call            fibonaci                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str16                                        
+            printInt                @RET                                        
+             println                                                            
+                GOTO            Label_60                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_59:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_60:                                                            
+                   +                 toy                   1                 toy
+                  >=                   n                   0                    
+                  BZ            Label_56                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc       fibonaci_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int                 mod                  ()                    
+               param                 int                   n                    
+               param                 int                   m                    
+                   /                   n                   m             #reg249
+                   *             #reg249                   m             #reg250
+                   -                   n             #reg250             #reg136
+                 ret             #reg136                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc                 mod                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int                 gcd                  ()                    
+               param                 int                   n                    
+               param                 int                   m                    
+                 var                 int                 rem                    
+                  ==                   n                   0                    
+                  BZ            Label_61                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   m                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_62                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_61:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_62:                                                            
+                  ==                   m                   0                    
+                  BZ            Label_63                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   n                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_64                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_63:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_64:                                                            
+                push                   m                                        
+                push                   n                                        
+                push                   m                                        
+                call                 mod                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                push                @RET                                        
+                call                 gcd                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                @RET                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc                 gcd                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int          isWrongGcd                  ()                    
+               param                 int                   n                    
+               param                 int                   m                    
+                  <=                   n                   0                    
+                  BZ            Label_65                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_66                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_65:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_66:                                                            
+                  <=                   m                   0                    
+                  BZ            Label_67                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_68                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_67:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_68:                                                            
+                 ret                   0                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc          isWrongGcd                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void            gcd_test                  ()                    
+                 var                 int                   n                    
+                 var                 int                   m                    
+                 var                 int                 toy                    
+            printStr              .str17                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   n                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   m                                        
+                push                   n                                        
+                push                   m                                        
+                call          isWrongGcd                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=                @RET                   0                    
+                  BZ            Label_69                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_70:                                                            
+            printStr              .str18                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   n                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   m                                        
+                   +                 toy                   1                 toy
+                push                   n                                        
+                push                   m                                        
+                call          isWrongGcd                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  ==                @RET                   0                    
+                  BZ            Label_70                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_71                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_69:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_71:                                                            
+                push                   n                                        
+                push                   m                                        
+                call                 gcd                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str19                                        
+            printInt                @RET                                        
+             println                                                            
+             endFunc            gcd_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int            is_prime                  ()                    
+               param                 int                   x                    
+                 var                 int                   i                    
+                 var                 int                 toy                    
+                   =                   2                                       i
+                  ==                   x                   2                    
+                  BZ            Label_72                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_73                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_72:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_73:                                                            
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_74:                                                            
+                push                   x                                        
+                push                   i                                        
+                call                 mod                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  ==                @RET                   0                    
+                  BZ            Label_75                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   0                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_76                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_75:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_76:                                                            
+                   +                   i                   1             #reg176
+                   *             #reg176             #reg176             #reg177
+                   +                 toy                   1                 toy
+                   =             #reg176                                       i
+                  >=             #reg177                   x                    
+                  BZ            Label_74                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc            is_prime                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void prime_factorization                  ()                    
+               param                 int                   n                    
+                 var                 int                   i                    
+                 var                 int               first                    
+                 var                 int                 toy                    
+                 var                 int                fuck                    
+                   =                   2                                       i
+                   =                   0                                   first
+                  ==                   n                   1                    
+                  BZ            Label_77                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str20                                        
+             println                                                            
+                 ret                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_78                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_77:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_78:                                                            
+                   =                   0                                    fuck
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_79:                                                            
+                push                   i                                        
+                call            is_prime                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  ==                @RET                   1                    
+                  BZ            Label_80                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                push                   n                                        
+                push                   i                                        
+                call                 mod                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  ==                @RET                   0                    
+                  BZ            Label_81                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_82:                                                            
+                   /                   n                   i             #reg193
+                   =             #reg193                                       n
+                  ==               first                   1                    
+                  BZ            Label_83                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str21                                        
+             println                                                            
+                GOTO            Label_84                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_83:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_84:                                                            
+            printInt                   i                                        
+             println                                                            
+                   +                 toy                   1                 toy
+                   =                   1                                   first
+                push                   n                                        
+                push                   i                                        
+                call                 mod                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=                @RET                   0                    
+                  BZ            Label_82                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_85                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_81:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_85:                                                            
+                GOTO            Label_86                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_80:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_86:                                                            
+                   +                   i                   1             #reg202
+                   *             #reg202             #reg202             #reg203
+                   +                fuck                   1                fuck
+                   =             #reg202                                       i
+                  >=             #reg203                   n                    
+                  BZ            Label_79                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=                   n                   1                    
+                  BZ            Label_87                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  ==               first                   1                    
+                  BZ            Label_88                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str22                                        
+             println                                                            
+                GOTO            Label_89                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_88:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_89:                                                            
+            printInt                   n                                        
+             println                                                            
+                GOTO            Label_90                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_87:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_90:                                                            
+             endFunc prime_factorization                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                voidprime_factorization_test                  ()                    
+                 var                 int                   n                    
+                 var                 int                 toy                    
+            printStr              .str23                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   n                                        
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_91:                                                            
+                   <                   n                   0                    
+                  BZ            Label_92                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str24                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfInt                   n                                        
+                GOTO            Label_93                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_92:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_93:                                                            
+                   +                 toy                   1                 toy
+                  >=                   n                   0                    
+                  BZ            Label_91                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            printStr              .str25                                        
+             println                                                            
+                push                   n                                        
+                call prime_factorization                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFuncprime_factorization_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 int             iswrong                  ()                    
+               param                char                   A                    
+                  ==                 'E'                   A                    
+                  BZ            Label_94                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   0                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_95                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_94:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_95:                                                            
+                  ==                 'M'                   A                    
+                  BZ            Label_96                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   0                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_97                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_96:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_97:                                                            
+                  ==                 'H'                   A                    
+                  BZ            Label_98                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                 ret                   0                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO            Label_99                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_98:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+           Label_99:                                                            
+                 ret                   1                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc             iswrong                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                void                main                  ()                    
+                 var                char                kind                    
+                 var                 int                 toy                    
+            printStr              .str26                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfChr                kind                                        
+                push                kind                                        
+                call             iswrong                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  !=                @RET                   0                    
+                  BZ           Label_100                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                   =                   0                                     toy
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_101:                                                            
+            printStr              .str27                                        
+             println                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+            scanfChr                kind                                        
+                   +                 toy                   1                 toy
+                push                kind                                        
+                call             iswrong                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                  ==                @RET                   0                    
+                  BZ           Label_101                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO           Label_102                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_100:                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_102:                                                            
+                   =                kind                                 #reg231
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_104:                                                            
+                  ==             #reg231                 'E'                    
+                  BZ           Label_105                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call         define_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call       operator_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call       fibonaci_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO           Label_103                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_105:                                                            
+                  ==             #reg231                 'M'                    
+                  BZ           Label_106                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call        dowhile_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call      condition_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call         string_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call            gcd_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO           Label_103                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_106:                                                            
+                  ==             #reg231                 'H'                    
+                  BZ           Label_107                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call         define_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call       operator_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call        dowhile_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call      condition_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call         string_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                call  miscellaneous_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                callprime_factorization_test                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+                GOTO           Label_103                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_107:                                                            
+            printStr              .str28                                        
+             println                                                            
+                GOTO           Label_103                                        
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+          Label_103:                                                            
+                 ret                                                            
+----------------------------------DAG--------------------------------------
+            dagBegin                                                            
+             endFunc                main                                        
