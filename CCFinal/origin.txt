@@ -1,7 +1,13 @@
+int x,y;
+void test(int a,int b){
+	int tmp;
+	tmp = b;
+	b = x;
+	x = tmp;
+	printf(b);
+	printf(x);
+}
+
 void main(){
-	int a;
-	int b;
-	b = 11;
-	a = b/10;
-	printf(a);
+	
 }

@@ -74,9 +74,9 @@ public:
 	bool checkEnqueue(vector<dagTreeNode*>& dagNodeQueue, dagTreeNode* dtn);
 	void enterNodeTable(string name);
 	int dagNodeQueueFront(vector<dagTreeNode *>& que);//求出要用dag树导出的第一条四元式的索引
-	bool isVarGlobal(vector<quadCode>& globalQuad, string& varname);//判断变量是否为全局变量
-	void checkFuture(int st, string& result, map<int, vector<int>>& curDagId);
-	void DAG(vector<quadCode>& globalQuad);
+	bool isVarGlobal(int curFuncIdx, string& varname);//判断变量是否为全局变量
+	bool checkFuture(int curquadIdx, map<int, vector<int>>& curDagId, map<int, map<string, int>>& curTableInfo);
+	void DAG(int curFuncIdx);
 };
 void BaseBlock::printQuad(quadCode& qc) {
 	quadCode newqc = qc;
@@ -370,54 +370,84 @@ int BaseBlock::dagNodeQueueFront(vector<dagTreeNode*>& que) {
 	return ret;
 }
 //判断变量是不是全局的
-bool BaseBlock::isVarGlobal(vector<quadCode>& globalQuad, string& varname) {
-	bool isGlobal = false;
-	for (int tot = 0; tot < globalQuad.size(); tot++) {
-		if (varname == globalQuad[tot].right) {//如果跟全局变量重名，那么赋值，即使是重名但不是去全局变量，那么赋值也不影响正确性
-			isGlobal = true;
-			break;
+bool BaseBlock::isVarGlobal(int curFuncIdx, string& varname) {
+	symbolTable[0].name = varname;//设置哨兵
+	int i, curIdx = btab[curFuncIdx].lastItem;//获取当前所在函数层的最后一个符号表项
+	if (curIdx == 0) {
+		//如果当前的索引为0，那么说明当前函数中没有任何项，为此从前往后所搜符号表，找到相应的函数位置
+		//因为此时，curBtab就指示出当前是第几个函数
+		int temp = 0, j = 1;
+		while (true) {
+			if (symbolTable[j].objTyp == function) temp++;
+			if (temp == curFuncIdx) break;
+			j++;
 		}
+		curIdx = j;
 	}
-	return isGlobal;
+	while (true) {
+		i = curIdx;
+		while (symbolTable[i].name != varname) {
+			if (symbolTable[i].link == 0) curIdx = i - 1;//如果第i项的link是0，
+														 //说明第i项就是本层第一个项，需要将curIdx设置为i-1以返回上一层最后一项，那一项就是当前函数
+			i = symbolTable[i].link;
+		}
+		if (curIdx == 0 || i != 0) break;//如果curIdx=0说明到达符号表第0项，表示没找到，而i!=0表示找到了对应的符号表项
+	}
+	if (i != 0 && symbolTable[i].lev == 0) return true;
+	return false;
 }
-void BaseBlock::checkFuture(int st, string& result, map<int, vector<int>>& curDagId) {
-	//判断变量result的原始值在将来是否会用到，如果是则需要保存其原值
-	bool ret = false;
-	for (int i = st + 1; i < quadTable.size(); i++) {
+bool BaseBlock::checkFuture(int curquadIdx, map<int, vector<int>>& curDagId, map<int, map<string, int>>& curTableInfo) {
+	//如果当前赋值四元式后面，有四元式用到了当前四元式的result，但是那个时候节点表里面当前四元式的left域对应的dagId已经变了，则不能用当前四元式的left域代替未来的result了，所以需要保存
+	bool ret = false, saveCur = false;
+	for (int i = curquadIdx + 1; i < quadTable.size(); i++) {
 		if (quadTable[i].op == "printInt" || quadTable[i].op == "printChr" || quadTable[i].op == "push" ||
 			quadTable[i].op == "ret" || quadTable[i].op == "=") {
-			if (quadTable[i].left== result && curDagId[i][0] != curDagId[st][0]) {
+			if (curDagId[i][0]==curDagId[curquadIdx][1] &&//result原值会被使用到
+				curTableInfo[i].find(quadTable[curquadIdx].left) != curTableInfo[i].end() && 
+				curTableInfo[i][quadTable[curquadIdx].left] != curDagId[curquadIdx][0]) {
 				ret = true;
-				break;
+			}
+			if (curDagId[i][0] == curDagId[curquadIdx][1] && curDagId[curquadIdx][0] != curDagId[curquadIdx][1]) {
+				saveCur = true;
 			}
 		}
 		else if (quadTable[i].op == "=[]" || quadTable[i].op == "[]=" || 
 			isQuadComp(quadTable[i]) || isQuadCalc(quadTable[i])) {
-			if (quadTable[i].left == result && curDagId[i][0] != curDagId[st][0]) {
+			if (curDagId[i][0]==curDagId[curquadIdx][1] &&
+				curTableInfo[i].find(quadTable[curquadIdx].left) != curTableInfo[i].end() && 
+				curTableInfo[i][quadTable[curquadIdx].left] != curDagId[curquadIdx][0]) {
 				ret = true;
-				break;
 			}
-			if (quadTable[i].right == result && curDagId[i][1] != curDagId[st][0]) {
+			if (curDagId[i][0] == curDagId[curquadIdx][1] && curDagId[curquadIdx][0] != curDagId[curquadIdx][1]) {
+				saveCur = true;
+			}
+			if (curDagId[i][1]==curDagId[curquadIdx][1] &&
+				curTableInfo[i].find(quadTable[curquadIdx].right) != curTableInfo[i].end() &&
+				curTableInfo[i][quadTable[curquadIdx].right] != curDagId[curquadIdx][0]) {
 				ret = true;
-				break;
+			}
+			if (curDagId[i][1] == curDagId[curquadIdx][1] && curDagId[curquadIdx][0] != curDagId[curquadIdx][1]) {
+				saveCur = true;
 			}
 		}
 	}
-	if (ret && curDagId[st][0] != curDagId[st][1]) {
+	if (saveCur) {//如果赋值四元式的result域在后面也被用到，同时赋值四元式的left域和result域对应的节点不等，那么需要保存当前的result域
 		string tempreg = buildRegName(allocReg());
-		quadCode qc = { "=",quadTable[st].result,"",tempreg };
+		quadCode qc = { "=",quadTable[curquadIdx].result,"",tempreg };
 		printQuad(qc);
-		treeNodes[curDagId[st][1]]->value = tempreg;
+		treeNodes[curDagId[curquadIdx][1]]->value = tempreg;
 	}
+	return ret;
 }
 //构建有向无环图以消除局部公共子表达式
-void BaseBlock::DAG(vector<quadCode>& globalQuad) {
+void BaseBlock::DAG(int curFuncIdx) {
 #ifdef NEW_QUAD_OUT
 	OptimizedQuad << "----------------------------------DAG--------------------------------------" << endl;
 #endif // NEW_QUAD_OUT
 	quadCode qc = { "dagBegin","","","" };
 	printQuad(qc);
 	map<int, vector<int>> curDagId;//做一个四元式编号到dagId集合的映射，即将需要用到寄存器的四元式(print类等)映射到当时它们所使用的寄存器号
+	map<int, map<string, int>> curTableInfo;//四元式i处的节点表信息
 	//生成DAG图
 	for (int i = 0; i < quadTable.size(); i++) {
 		if (isQuadCalc(quadTable[i]) || quadTable[i].op == "=[]") {//处理运算类四元式，=[]跟运算量四元式很像故也将其归类到运算类四元式中
@@ -458,6 +488,8 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 			curDagId[i] = {};//插入当时所需的值在dag树中的编号
 			curDagId[i].push_back(src1Id);
 			curDagId[i].push_back(src2Id);
+			curTableInfo[i][quadTable[i].left] = src1Id;
+			curTableInfo[i][quadTable[i].right] = src2Id;
 		}
 		else if (quadTable[i].op == "=") { //单纯的赋值
 			//需要用到一个寄存器
@@ -483,6 +515,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 			curDagId[i] = {};
 			curDagId[i].push_back(srcId);
 			curDagId[i].push_back(resultId);
+			curTableInfo[i][quadTable[i].left] = srcId;
 		}
 		else if (quadTable[i].op == "printInt" || quadTable[i].op == "printChr" || quadTable[i].op == "ret" || quadTable[i].op == "push") {
 			//需要用到一个寄存器
@@ -491,6 +524,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 				int lidx = nodeTable[searchInNodeTable(quadTable[i].left)]->dagId;
 				treeNodes[lidx]->ref++;
 				curDagId[i].push_back(lidx);
+				curTableInfo[i][quadTable[i].left] = lidx;
 			}
 			else {
 				curDagId[i].push_back(-1);//为-1表示就是直接输出四元式中的字符串即可
@@ -503,6 +537,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 				int lidx = nodeTable[searchInNodeTable(quadTable[i].left)]->dagId;
 				treeNodes[lidx]->ref++;
 				curDagId[i].push_back(lidx);
+				curTableInfo[i][quadTable[i].left] = lidx;
 			}
 			else {
 				curDagId[i].push_back(-1);
@@ -511,6 +546,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 				int ridx = nodeTable[searchInNodeTable(quadTable[i].right)]->dagId;
 				treeNodes[ridx]->ref++;
 				curDagId[i].push_back(ridx);
+				curTableInfo[i][quadTable[i].right] = ridx;
 			}
 			else {
 				curDagId[i].push_back(-1);
@@ -537,7 +573,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 	int i = 0, dagNodeFront = dagNodeQueueFront(dagNodeQueue);
 	set<string> tempOutSet = outSet;//临时的out集合,由于全局变量的特殊性,将在此基本块中被赋值的全局变量也放入其中
 	for (int tot = 0; tot < quadTable.size(); tot++) {
-		if (quadTable[tot].op == "=" && isVarGlobal(globalQuad, quadTable[tot].result))
+		if (quadTable[tot].op == "=" && isVarGlobal(curFuncIdx, quadTable[tot].result))
 			tempOutSet.insert(quadTable[tot].result);
 	}
 	//输出基本块头部四元式
@@ -652,16 +688,14 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 				quadTable[i].right = treeNodes[curDagId[i][1]]->value;
 		}
 		else if (quadTable[i].op == "=") {
-			int lidx = searchInNodeTable(quadTable[i].left);
-			if (curDagId[i][0] != nodeTable[lidx]->dagId) { //左节点的值不久后会改变
+			if (checkFuture(i,curDagId,curTableInfo)) { 
 				quadTable[i].left = treeNodes[curDagId[i][0]]->value;
 				treeNodes[curDagId[i][0]]->value = quadTable[i].result;
-				checkFuture(i, quadTable[i].result, curDagId);//检测赋值符号右部的原值是否在将来会被用到，如果用到那么保存一下原值
 				printQuad(quadTable[i]);
 			}
 			else if (tempOutSet.find(quadTable[i].result) != tempOutSet.end()) { //如果以后会用到，那么输出
 				quadTable[i].left = treeNodes[curDagId[i][0]]->value;
-				checkFuture(i, quadTable[i].result, curDagId);
+				treeNodes[curDagId[i][0]]->value = quadTable[i].result;
 				printQuad(quadTable[i]);
 			}
 		}

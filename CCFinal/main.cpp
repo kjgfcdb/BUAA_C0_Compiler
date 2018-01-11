@@ -458,8 +458,8 @@ void statements() {
 			if (ident_type == charTyp && (!isExprChar)) error(37);//类型不正确，报错，注意
 #endif
 																  //只针对将int赋值给char的报错，如果是char赋值给int当然是可以的
-			//quadCodeTable.back().result = ident_save;
-			assign_quad(buildRegName(tempReg), ident_save);//生成赋值语句四元式
+			quadCodeTable.back().result = ident_save;
+			//assign_quad(buildRegName(tempReg), ident_save);//生成赋值语句四元式
 		}
 		else if (curWord.sy == lBracket) {//给数组元素赋值
 			if (symbolTable[search_result].objTyp != arrayTyp) {
@@ -825,7 +825,7 @@ int main() {
 		for (int i = 0; i < bb.funcBlocks.size(); i++) {
 			bb.funcBlocks[i]->genInOutSet();//函数块内的基本块建立in/out集
 			for (int j = 0; j < bb.funcBlocks[i]->innerBlocks.size(); j++) {
-				bb.funcBlocks[i]->innerBlocks[j]->DAG(bb.newQuads);//传入全局变量
+				bb.funcBlocks[i]->innerBlocks[j]->DAG(i+1);//传入全局变量
 				for (int k = 0; k < bb.funcBlocks[i]->innerBlocks[j]->newQuads.size(); k++)
 					dagQuad.push_back(bb.funcBlocks[i]->innerBlocks[j]->newQuads[k]);
 			}

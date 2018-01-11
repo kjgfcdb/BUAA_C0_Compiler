@@ -1,94 +1,168 @@
-                void                   f                  ()                    
-                                   param                 int                   a                    
-                                   param                 int                   b                    
-                                     var                 int                   t                    
-                                     var                 int                 tot                    
-                                       =                   a                                       t
-                                       =                   b                                       a
-                                       =                   t                                       b
-                                       =                   a                                   #reg3
-                                printInt               #reg3                                        
-                                 println                                                            
-                                       =                   b                                   #reg4
-                                printInt               #reg4                                        
-                                 println                                                            
-                                       =                   a                                       t
-                                       =                   b                                       a
-                                       =                   t                                       b
-                                       =                   a                                   #reg8
-                                printInt               #reg8                                        
-                                 println                                                            
-                                       =                   b                                   #reg9
-                                printInt               #reg9                                        
-                                 println                                                            
-                                       =                   a                                       t
-                                       =                   b                                       a
-                                       =                   t                                       b
-                                       =                   a                                  #reg13
-                                printInt              #reg13                                        
-                                 println                                                            
-                                       =                   b                                  #reg14
-                                printInt              #reg14                                        
-                                 println                                                            
-                                 endFunc                   f                                        
-                void                   g                  ()                    
-                                   param                 int                   a                    
-                                   param                 int                   b                    
-                                     var                 int                   t                    
-                                     var                 int                 tot                    
-                                       =                   a                                       t
-                                       =                   b                                       a
-                                       =                   t                                       b
-                                       =                   a                                  #reg18
-                                printInt              #reg18                                        
-                                 println                                                            
-                                       =                   b                                  #reg19
-                                printInt              #reg19                                        
-                                 println                                                            
-                                       =                   a                                       t
-                                       =                   b                                       a
-                                       =                   t                                       b
-                                       =                   a                                  #reg23
-                                printInt              #reg23                                        
-                                 println                                                            
-                                       =                   b                                  #reg24
-                                printInt              #reg24                                        
-                                 println                                                            
-                                 endFunc                   g                                        
-                void                swap                  ()                    
-                                   param                 int                   a                    
-                                   param                 int                   b                    
-                                     var                 int                   t                    
-                                       =                   a                                       t
-                                       =                   b                                       a
-                                       =                   t                                       b
-                                       =                   a                                  #reg28
-                                printInt              #reg28                                        
-                                 println                                                            
-                                       =                   b                                  #reg29
-                                printInt              #reg29                                        
-                                 println                                                            
-                                 endFunc                swap                                        
-                void                main                  ()                    
+                                   const                 int             MAX_NUM                1024
+                void        complete_num                  ()                    
+                                arrayVar                 int                   k                1024
+                                     var                 int                   i                    
+                                     var                 int                   j                    
+                                     var                 int                   n                    
+                                     var                 int                   s                    
+                                     var                 int                  x1                    
+                                     var                 int                   m                    
+                                     var                 int                  k2                    
+                                     var                 int                   h                    
+                                     var                 int                leap                    
+                                     var                 int                  x2                    
+                                       =                   2                                   #reg0
+                                       =               #reg0                                       j
+                                Label_0:                                                            
+                                       -                   0                   1                   n
+                                       =                   j                                       s
+                                       =                   1                                   #reg3
+                                       =               #reg3                                       i
+                                Label_1:                                                            
+                                       /                   j                   i               #reg4
+                                       *               #reg4                   i                  x1
+                                       =                  x1                                   #reg5
+                                       =                   j                                   #reg6
+                                      ==               #reg5               #reg6                    
+                                      BZ             Label_2                                        
+                                       +                   n                   1                   n
+                                       -                   s                   i                   s
+                                       =                   n                                   #reg9
+                                       =                1024                                  #reg10
+                                      >=               #reg9              #reg10                    
+                                      BZ             Label_3                                        
                                 printStr               .str0                                        
                                  println                                                            
-                                       =                   0                                  #reg30
-                                    push              #reg30                                        
-                                       =                   1                                  #reg31
-                                    push              #reg31                                        
-                                    call                   f                                        
+                                    GOTO             Label_4                                        
+                                Label_3:                                                            
+                                       =                   n                                  #reg11
+                                       =                   i                                  #reg12
+                                     []=              #reg11              #reg12                   k
+                                Label_4:                                                            
+                                    GOTO             Label_5                                        
+                                Label_2:                                                            
+                                Label_5:                                                            
+                                       +                   i                   1                   i
+                                       =                   i                                  #reg13
+                                       =                   j                                  #reg14
+                                      >=              #reg13              #reg14                    
+                                      BZ             Label_1                                        
+                                       =                   s                                  #reg15
+                                       =                   0                                  #reg16
+                                      ==              #reg15              #reg16                    
+                                      BZ             Label_6                                        
+                                       =                   j                                  #reg17
                                 printStr               .str1                                        
+                                printInt              #reg17                                        
                                  println                                                            
-                                       -                   0                   1              #reg32
-                                    push              #reg32                                        
-                                       =                   1                                  #reg33
-                                    push              #reg33                                        
-                                    call                   g                                        
+                                       =                   0                                  #reg18
+                                       =              #reg18                                       i
+                                Label_7:                                                            
+                                       =                   i                                  #reg19
+                                     =[]                   k              #reg19              #reg20
                                 printStr               .str2                                        
+                                printInt              #reg20                                        
                                  println                                                            
-                                       =                   2                                  #reg34
-                                    push              #reg34                                        
-                                       =                   3                                  #reg35
-                                    push              #reg35                                        
-                                    call                swap                                        
+                                       +                   i                   1                   i
+                                       =                   i                                  #reg21
+                                       =                   n                                  #reg22
+                                       >              #reg21              #reg22                    
+                                      BZ             Label_7                                        
+                                printStr               .str3                                        
+                                 println                                                            
+                                    GOTO             Label_8                                        
+                                Label_6:                                                            
+                                Label_8:                                                            
+                                       +                   j                   1                   j
+                                       =                   j                                  #reg23
+                                       =             MAX_NUM                                  #reg24
+                                      >=              #reg23              #reg24                    
+                                      BZ             Label_0                                        
+                                printStr               .str4                                        
+                                 println                                                            
+                                       =                   0                                       h
+                                       =                   1                                    leap
+                                       =                   2                                  #reg27
+                                       =              #reg27                                       m
+                                Label_9:                                                            
+                                       -                   m                   1                  k2
+                                       =                   2                                  #reg29
+                                       =              #reg29                                       i
+                               Label_10:                                                            
+                                       /                   m                   i              #reg30
+                                       *              #reg30                   i                  x2
+                                       =                  x2                                  #reg31
+                                       =                   m                                  #reg32
+                                      ==              #reg31              #reg32                    
+                                      BZ            Label_11                                        
+                                       =                   0                                    leap
+                                    GOTO            Label_12                                        
+                               Label_11:                                                            
+                               Label_12:                                                            
+                                       +                   i                   1                   i
+                                       =                   i                                  #reg34
+                                       =                  k2                                  #reg35
+                                       >              #reg34              #reg35                    
+                                      BZ            Label_10                                        
+                                       =                leap                                  #reg36
+                                       =                   1                                  #reg37
+                                      ==              #reg36              #reg37                    
+                                      BZ            Label_13                                        
+                                       =                   m                                  #reg38
+                                printStr               .str5                                        
+                                printInt              #reg38                                        
+                                 println                                                            
+                                       +                   h                   1                   h
+                                       /                   h                  10              #reg40
+                                       *              #reg40                  10                  x2
+                                       =                  x2                                  #reg41
+                                       =                   h                                  #reg42
+                                      ==              #reg41              #reg42                    
+                                      BZ            Label_14                                        
+                                printStr               .str6                                        
+                                 println                                                            
+                                    GOTO            Label_15                                        
+                               Label_14:                                                            
+                               Label_15:                                                            
+                                    GOTO            Label_16                                        
+                               Label_13:                                                            
+                               Label_16:                                                            
+                                       =                   1                                    leap
+                                       +                   m                   1                   m
+                                       =                   m                                  #reg44
+                                       =             MAX_NUM                                  #reg45
+                                       >              #reg44              #reg45                    
+                                      BZ             Label_9                                        
+                                       =                   h                                  #reg46
+                                printStr               .str7                                        
+                                printInt              #reg46                                        
+                                 println                                                            
+                                 endFunc        complete_num                                        
+                void                main                  ()                    
+                                    call        complete_num                                        
                                  endFunc                main                                        
+
+
+--------Symbol Table--------
+      name      type   objtype     value      link       lev       ref     dimen      addr
+   MAX_NUM       int  constant      1024         0         0         0         0         0
+complete_num      void  function         0         1         0         1         0         0
+         k       int  arrayTyp      1024         0         1         0      1024         2
+         i       int  variable         0         3         1         0         0      1026
+         j       int  variable         0         4         1         0         0      1027
+         n       int  variable         0         5         1         0         0      1028
+         s       int  variable         0         6         1         0         0      1029
+        x1       int  variable         0         7         1         0         0      1030
+         m       int  variable         0         8         1         0         0      1031
+        k2       int  variable         0         9         1         0         0      1032
+         h       int  variable         0        10         1         0         0      1033
+      leap       int  variable         0        11         1         0         0      1034
+        x2       int  variable         0        12         1         0         0      1035
+      main      void  function         0         2         0         2         0         0
+
+
+--------Block Table--------
+  lastItem  lastPara     psize     isize
+        14         0         0         1
+        13         0         0      1034
+         0         0         0         0
