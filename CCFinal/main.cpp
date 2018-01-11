@@ -1,7 +1,7 @@
 #include "codeGenerate.h"
 
 //#define CHECK_INT_TO_CHAR // int类型向char类型转换是否要检测
-#define OPTIMIZE_ON //是否开启优化
+//#define OPTIMIZE_ON //是否开启优化
 void error(int errNo) { //输出错误信息，包括错误数量统计以及错误所在行数
 	errCnt++;
 	printf("Error %d : %s at line %d\n", errCnt, errormap[errNo].c_str(), curLineCnt);
@@ -825,7 +825,7 @@ int main() {
 		for (int i = 0; i < bb.funcBlocks.size(); i++) {
 			bb.funcBlocks[i]->genInOutSet();//函数块内的基本块建立in/out集
 			for (int j = 0; j < bb.funcBlocks[i]->innerBlocks.size(); j++) {
-				bb.funcBlocks[i]->innerBlocks[j]->DAG(bb.newQuads);//传入全局变量
+				bb.funcBlocks[i]->innerBlocks[j]->DAG(i+1);//传入全局变量
 				for (int k = 0; k < bb.funcBlocks[i]->innerBlocks[j]->newQuads.size(); k++)
 					dagQuad.push_back(bb.funcBlocks[i]->innerBlocks[j]->newQuads[k]);
 			}

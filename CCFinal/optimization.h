@@ -74,9 +74,9 @@ public:
 	bool checkEnqueue(vector<dagTreeNode*>& dagNodeQueue, dagTreeNode* dtn);
 	void enterNodeTable(string name);
 	int dagNodeQueueFront(vector<dagTreeNode *>& que);//求出要用dag树导出的第一条四元式的索引
-	bool isVarGlobal(vector<quadCode>& globalQuad, string& varname);//判断变量是否为全局变量
+	bool isVarGlobal(int curFuncIdx, string& varname);//判断变量是否为全局变量
 	void checkFuture(int st, string& result, map<int, vector<int>>& curDagId);
-	void DAG(vector<quadCode>& globalQuad);
+	void DAG(int curFuncIdx);
 };
 void BaseBlock::printQuad(quadCode& qc) {
 	quadCode newqc = qc;
@@ -369,16 +369,31 @@ int BaseBlock::dagNodeQueueFront(vector<dagTreeNode*>& que) {
 	}
 	return ret;
 }
-//判断变量是不是全局的
-bool BaseBlock::isVarGlobal(vector<quadCode>& globalQuad, string& varname) {
-	bool isGlobal = false;
-	for (int tot = 0; tot < globalQuad.size(); tot++) {
-		if (varname == globalQuad[tot].right) {//如果跟全局变量重名，那么赋值，即使是重名但不是去全局变量，那么赋值也不影响正确性
-			isGlobal = true;
-			break;
+bool BaseBlock::isVarGlobal(int curFuncIdx, string& varname) {
+	symbolTable[0].name = varname;//设置哨兵
+	int i, curIdx = btab[curFuncIdx].lastItem;//获取当前所在函数层的最后一个符号表项
+	if (curIdx == 0) {
+		//如果当前的索引为0，那么说明当前函数中没有任何项，为此从前往后所搜符号表，找到相应的函数位置
+		//因为此时，curBtab就指示出当前是第几个函数
+		int temp = 0, j = 1;
+		while (true) {
+			if (symbolTable[j].objTyp == function) temp++;
+			if (temp == curFuncIdx) break;
+			j++;
 		}
+		curIdx = j;
 	}
-	return isGlobal;
+	while (true) {
+		i = curIdx;
+		while (symbolTable[i].name != varname) {
+			if (symbolTable[i].link == 0) curIdx = i - 1;//如果第i项的link是0，
+														 //说明第i项就是本层第一个项，需要将curIdx设置为i-1以返回上一层最后一项，那一项就是当前函数
+			i = symbolTable[i].link;
+		}
+		if (curIdx == 0 || i != 0) break;//如果curIdx=0说明到达符号表第0项，表示没找到，而i!=0表示找到了对应的符号表项
+	}
+	if (i != 0 && symbolTable[i].lev == 0) return true;
+	return false;
 }
 void BaseBlock::checkFuture(int st, string& result, map<int, vector<int>>& curDagId) {
 	//判断变量result的原始值在将来是否会用到，如果是则需要保存其原值
@@ -411,7 +426,7 @@ void BaseBlock::checkFuture(int st, string& result, map<int, vector<int>>& curDa
 	}
 }
 //构建有向无环图以消除局部公共子表达式
-void BaseBlock::DAG(vector<quadCode>& globalQuad) {
+void BaseBlock::DAG(int curFuncIdx) {
 #ifdef NEW_QUAD_OUT
 	OptimizedQuad << "----------------------------------DAG--------------------------------------" << endl;
 #endif // NEW_QUAD_OUT
@@ -537,7 +552,7 @@ void BaseBlock::DAG(vector<quadCode>& globalQuad) {
 	int i = 0, dagNodeFront = dagNodeQueueFront(dagNodeQueue);
 	set<string> tempOutSet = outSet;//临时的out集合,由于全局变量的特殊性,将在此基本块中被赋值的全局变量也放入其中
 	for (int tot = 0; tot < quadTable.size(); tot++) {
-		if (quadTable[tot].op == "=" && isVarGlobal(globalQuad, quadTable[tot].result))
+		if (quadTable[tot].op == "=" && isVarGlobal(curFuncIdx, quadTable[tot].result))
 			tempOutSet.insert(quadTable[tot].result);
 	}
 	//输出基本块头部四元式
