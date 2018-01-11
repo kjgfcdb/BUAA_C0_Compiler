@@ -91,20 +91,7 @@ void init() {
 	display[0] = 0;
 	symbolTableItem placeHolder;
 	symbolTable.push_back(placeHolder);//占位符
-	/*enter_symtab("int", noTyp, reservedTyp, 0, 0);
-	enter_symtab("char", noTyp, reservedTyp, 0, 0);
-	enter_symtab("void", noTyp, reservedTyp, 0, 0);
-	enter_symtab("main", noTyp, reservedTyp, 0, 0);
-	enter_symtab("printf", noTyp, reservedTyp, 0, 0);
-	enter_symtab("scanf", noTyp, reservedTyp, 0, 0);
-	enter_symtab("const", noTyp, reservedTyp, 0, 0);
-	enter_symtab("for", noTyp, reservedTyp, 0, 0);
-	enter_symtab("if", noTyp, reservedTyp, 0, 0);
-	enter_symtab("else", noTyp, reservedTyp, 0, 0);
-	enter_symtab("switch", noTyp, reservedTyp, 0, 0);
-	enter_symtab("case", noTyp, reservedTyp, 0, 0);
-	enter_symtab("default", noTyp, reservedTyp, 0, 0);
-	enter_symtab("return", noTyp, reservedTyp, 0, 0);*/
+
 	//向分程序表中插入一个块，这就是主块
 	bTabItem temp;
 	temp.lastItem = symbolTable.size() - 1;
@@ -127,7 +114,6 @@ void getNextSymbol() {
 		if (buffer[cursor] == '\n') 
 			curLineCnt++;
 		cursor++;
-		
 	}
 	if (cursor >= TOTAL_LENGTH) {
 		curSymbol = "";
@@ -176,7 +162,6 @@ void getNextSymbol() {
 		cursor--;
 	}
 	else {
-		//cout << "******** Illegal character! ********	: " << temp << endl;
 		error(30);
 	}
 }
@@ -211,12 +196,12 @@ bool checkCharConst(string cCon) {
 }
 //检查字符串常量是否合法
 bool checkStrConst(string sCon) {
-	//检查头尾
-	if (sCon[0] != '\"' || sCon[sCon.size() - 1] != '\"')
+	if (sCon.size() < 2) //检查长度
+		return false;
+	if (sCon[0] != '\"' || sCon[sCon.size() - 1] != '\"') //检查头尾
 		return false;
 	for (int i = 1; i < sCon.size() - 1; i++) {
-		if (!(sCon[i] == 32 ||
-			sCon[i] == 33 ||
+		if (!(sCon[i] == 32 || sCon[i] == 33 ||
 			(sCon[i] >= 35 && sCon[i] <= 126))) {
 			return false;
 		}
@@ -241,35 +226,34 @@ bool checkIdent(string iden) {
 void getNextWord() {
 	getNextSymbol();
 	curWord = { "",noSym,"" };
-	for (int i = 0; i < ksy.size(); i++) {
+	for (int i = 0; i < ksy.size(); i++) {//是关键字
 		if (ksy[i].value == curSymbol) {
 			curWord = ksy[i];
 			return;
 		}
 	}
 	curWord.value = curSymbol;
-	if (curSymbol.size() == 0) {
+	if (curSymbol.size() == 0) {//空串
 		return;
 	}
-	else if (checkIntConst(curWord.value)) {
+	else if (checkIntConst(curWord.value)) {//是整型常量
 		curWord.sy = intCon;
 		curWord.alpha = "INT_CONST";
 	}
-	else if (checkCharConst(curWord.value)) {
+	else if (checkCharConst(curWord.value)) {//是字符常量
 		curWord.sy = charCon;
 		curWord.alpha = "CHAR_CONST";
 	}
-	else if (checkStrConst(curWord.value)) {
+	else if (checkStrConst(curWord.value)) {//是字符串常量
 		curWord.sy = strCon;
 		str_insert(curWord.value);
 		curWord.alpha = "STRING_CONST";
 	}
-	else if (checkIdent(curWord.value)) {
+	else if (checkIdent(curWord.value)) {//是标识符
 		curWord.sy = ident;
 		curWord.alpha = "IDENTIFIER";
 	}
 	else {
-		//cout << "******** Invalid symbol! ********	: " << curWord.value << endl;
 		error(31);
 		curWord.value = "";
 	}

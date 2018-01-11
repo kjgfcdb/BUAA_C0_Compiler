@@ -12,10 +12,8 @@
 #include <cstdio>
 #define MEM_SAVE 2 //进入函数时留出的空间，保存$ra以及$fp等
 #define BUFFER_SIZE 100000000 //存放源文件字符串的大小
-//控制是否输出到文件
-#define FILE_OUTPUT 
-//控制是否输出四元式
-#define OUTPUT_QUADCODE
+#define FILE_OUTPUT //控制是否输出到文件
+#define OUTPUT_QUADCODE//控制是否输出四元式
 using namespace std;
 
 #ifdef FILE_OUTPUT
@@ -96,14 +94,14 @@ typedef struct {
 //符号表定义
 typedef struct {
 	string name = ""; // 符号表项名
-	types type = noTyp; //类型，例如int,char或者数组，如果objType是函数那么这个是返回值类型
+	types type = noTyp; //类型，例如int,char或者void
 	objType objTyp = noObjTyp;//对象类型，为常量、变量、函数、数组、参数之一
-	int value = 0; //变量或者常量的int或者char的值
+	int value = 0; //常量的int或者char的值
 	int link = 0;//当前层符号表中前一个项在符号表中的索引，为0表示是本层第一个项
 	int lev = 0; //所在层次
 	int ref = 0;//如果是函数，那么是其在分程序表中的索引
 	int dimen = 0;//如果是数组，这代表数组维数，如果是函数，这代表函数参数个数
-	int addr = 0; //内存地址，如果是函数，那么addr存放函数的标签
+	int addr = 0; //内存地址
 } symbolTableItem;
 //符号表
 vector<symbolTableItem> symbolTable;
@@ -146,7 +144,8 @@ int errCnt = 0;
 bool mainFuncFlag = false;
 //当前函数类型，用于判断函数的返回语句是否符合函数类型
 symbol curFuncType = noSym;
-bool funcRet = false;//当前函数是否有返回语句
+//当前函数是否有返回语句
+bool funcRet = false;
 //内存偏移量
 int MEM_IDX = 0;
 //结束符，用于做skip函数的参数组成部分

@@ -2,12 +2,11 @@
 
 //#define CHECK_INT_TO_CHAR // intÀàĞÍÏòcharÀàĞÍ×ª»»ÊÇ·ñÒª¼ì²â
 #define OPTIMIZE_ON //ÊÇ·ñ¿ªÆôÓÅ»¯
-//Êä³ö´íÎóĞÅÏ¢£¬°üÀ¨´íÎóÊıÁ¿Í³¼ÆÒÔ¼°´íÎóËùÔÚĞĞÊı
-void error(int errNo) {
+void error(int errNo) { //Êä³ö´íÎóĞÅÏ¢£¬°üÀ¨´íÎóÊıÁ¿Í³¼ÆÒÔ¼°´íÎóËùÔÚĞĞÊı
 	errCnt++;
 	printf("Error %d : %s at line %d\n", errCnt, errormap[errNo].c_str(), curLineCnt);
 }
-
+//Ìøµ½jumpsetÖĞµÄ·ûºÅÎªÖ¹£¬²¢ÇÒ¸ù¾İerrNo±¨´í
 void skip(set<int> jumpset, int errNo) {
 	error(errNo);
 	while (true) {
@@ -16,7 +15,6 @@ void skip(set<int> jumpset, int errNo) {
 		getNextWord();
 	}
 }
-
 //ÅĞ¶Ïµ±Ç°·ûºÅÊÇ·ñÊôÓÚtarget¼¯ºÏ£¬Èç¹û²»ÊÇ£¬Ìø¶Áµ½targetÒÔ¼°stop·ûºÅ¼¯ºÏÎªÖ¹
 void test(set<int> target, set<int> stop, int errNo) {
 	if (target.find(curWord.sy) == target.end()) {//targetÖĞÃ»ÓĞµ±Ç°·ûºÅ
@@ -25,7 +23,6 @@ void test(set<int> target, set<int> stop, int errNo) {
 	}
 	else getNextWord();
 }
-
 //»ñÈ¡ÕûÊı³£Á¿µÄÖµ
 int getIntValue(bool isNegative, string value) {
 	int ret = 0;
@@ -45,7 +42,6 @@ int getIntValue(bool isNegative, string value) {
 	}
 	else return 0;
 }
-
 //´¦ÀíÖµ²ÎÊıÁĞ±í
 void valueParam(string funcName) {
 	int tempReg, paramNum = 0, paramIdx;
@@ -79,7 +75,6 @@ void valueParam(string funcName) {
 	if (symbolTable[funcIdx].dimen != paramNum)
 		error(38);//±¨´í£¬²ÎÊı²»Æ¥Åä
 }
-
 //´¦ÀíÒò×Ó
 void factor(int& regId) {
 	static int regCnt = 0;
@@ -176,7 +171,6 @@ void factor(int& regId) {
 		skip(EXPR_FOLLOW, 15);
 	}
 }
-
 //´¦ÀíÏî
 void term(int& regId) {
 	string lop, rop;
@@ -202,7 +196,6 @@ void term(int& regId) {
 	exprVal = tempExprVal;
 	isExprStatic = tempIsExprStatic;
 }
-
 //´¦Àí±í´ïÊ½£¬µ±Ç°·ûºÅÎª+,-»òÕß±êÊ¶·û,ÕûÊı,µ¥ÒıºÅ(±íÊ¾×Ö·û),×óÀ¨ºÅ
 void expression(int& regId) {
 	int tempExprVal;
@@ -243,7 +236,6 @@ void expression(int& regId) {
 	exprVal = tempExprVal;//×îºó½«ÁÙÊ±µÄ±í´ïÊ½µÄÖµ¸³¸øexprVal
 	isExprStatic = tempIsExprStatic;
 }
-
 //´¦Àíº¯Êı²ÎÊı
 void param() {
 	if (curWord.sy == rParent) {//²ÎÊı±íÎª¿Õ£¬Ö±½Ó½áÊø
@@ -268,7 +260,6 @@ void param() {
 		error(17);
 	}
 }
-
 //´¦Àíµ¥¸ö³£Á¿¶¨Òå,    £¼³£Á¿¶¨Òå£¾ ::=  int£¼±êÊ¶·û£¾£½£¼ÕûÊı£¾{,£¼±êÊ¶·û£¾£½£¼ÕûÊı£¾} | char£¼±êÊ¶·û£¾£½£¼×Ö·û£¾{ ,£¼±êÊ¶·û£¾£½£¼×Ö·û£¾ }
 void singleConstDef(symbol intOrchar) {
 	string name = curWord.value;//±êÊ¶·ûÃû×Ö
@@ -305,7 +296,6 @@ void singleConstDef(symbol intOrchar) {
 		}
 	}
 }
-
 //´¦Àí³£Á¿ÉùÃ÷£¬°üº¬³£Á¿¶¨Òå,  £¼³£Á¿ËµÃ÷£¾ ::=  const£¼³£Á¿¶¨Òå£¾;{ const£¼³£Á¿¶¨Òå£¾;}
 void constdec() {
 	getNextWord();//µ±Ç°ÒÑ¾­ÊÇconst
@@ -332,7 +322,6 @@ void constdec() {
 		if (endSym.find(curWord.sy) != endSym.end()) getNextWord();
 	}
 }
-
 //¸´ºÏÓï¾ä´¦Àí
 void compoundStatement() {
 	int placeholder = 0;//Õ¼Î»·û£¬ÎŞÊµ¼ÊÒâÒå
@@ -409,8 +398,6 @@ void variabledec(int &funcDeclared) {
 		error(2);
 	}
 }
-
-
 //´¦Àíº¯Êı¶¨Òå£¬µ±Ç°Ê¶±ğµ½void,int»òÕßchar
 void functiondec() {
 	symbol savesymbol = curWord.sy;
@@ -438,7 +425,6 @@ void functiondec() {
 		skip({ ident, mainSy, lBrace }, 23);
 	}
 }
-
 //´¦ÀíÓï¾ä
 void statements() {
 	if (curWord.sy == ifSy) {//Ìõ¼şÓï¾ä
@@ -529,7 +515,6 @@ void statements() {
 		skip({ rBrace }, 21);
 	}
 }
-
 //´¦ÀíÇé¿ö±í
 void casetable(int exprReg, int& linkLabel, int exitLabel) {
 	set<int> labelValue;//´æ´¢±êÇ©µÄÖµ£¬±ÜÃâÖØ¸´±êÇ©
@@ -587,7 +572,6 @@ void casetable(int exprReg, int& linkLabel, int exitLabel) {
 	}
 	linkLabel = nextLabel;//×îºó½«linkLabel´«µİ³öÈ¥Áô¸ødefaultÓï¾äÊ¹ÓÃ
 }
-
 //´¦ÀíÈ±Ê¡Óï¾ä£¬Ö»»áÔÚswitchÓï¾äÖĞ³öÏÖ
 void defaultstatement(int linkLabel, int exitLabel) {
 	test({ defaultSy }, { colon }, 26);
@@ -596,7 +580,6 @@ void defaultstatement(int linkLabel, int exitLabel) {
 	statements();
 	jmp_quad(exitLabel, false);//Ìø×ªµ½½áÊø
 }
-
 //´¦ÀíswitchÓï¾ä£¬µ±Ç°·ûºÅÎªswitch
 void switchstatement() {
 	int tempReg;//´æ·Å±í´ïÊ½½á¹ûµÄÁÙÊ±¼Ä´æÆ÷
@@ -612,7 +595,6 @@ void switchstatement() {
 	placeLabel(exitLabel);//·ÅÖÃ½áÊø±êºÅ
 	test({ rBrace }, STMT_FIRST, 8);//ÓÒ´óÀ¨ºÅÈ±Ê§Èİ´í
 }
-
 //´¦Àí·µ»ØÓï¾ä£¬µ±Ç°·ûºÅÎªreturn
 void returnstatement() {
 	int tempReg;//ÁÙÊ±¼Ä´æÆ÷
@@ -636,7 +618,6 @@ void returnstatement() {
 	}
 	else error(32);//·µ»ØÓï¾äÖĞ³öÏÖ·Ç·¨·ûºÅ
 }
-
 //´¦Àí¶ÁÓï¾ä£¬µ±Ç°ÊÇscanf
 void readstatement() {
 	getNextWord();
@@ -650,7 +631,6 @@ void readstatement() {
 	}
 	test({ rParent }, { semicolon }, 4);
 }
-
 //´¦ÀíĞ´Óï¾ä£¬µ±Ç°ÊÇprintf
 void writestatement() {
 	int tempReg;
@@ -679,7 +659,6 @@ void writestatement() {
 	test({ rParent }, { semicolon }, 4);
 	println_quad();//Éú³É»»ĞĞ
 }
-
 //´¦ÀíforÓï¾ä£¬µ±Ç°·ûºÅÎªfor
 void forstatement() {
 	int tempReg, forLabel;
@@ -732,7 +711,6 @@ void forstatement() {
 	}
 	else error(12);
 }
-
 //´¦ÀíÌõ¼ş£¬Ìõ¼ş±»ÓÃÓÚifÒÔ¼°forÓï¾ä
 void condition(int& newLabel, bool branchIfFalse) {//ÏÈ²âÊÔÒ»ÏÂÌõ¼ş£¬Èç¹û²»Âú×ãÌøµ½±êºÅnewLabel
 	int tempReg, saveReg;
@@ -762,7 +740,6 @@ void condition(int& newLabel, bool branchIfFalse) {//ÏÈ²âÊÔÒ»ÏÂÌõ¼ş£¬Èç¹û²»Âú×ãÌ
 		cond_quad(relOp, buildRegName(saveReg), "0", newLabel, branchIfFalse);//²»Îª0ÄÇÃ´¾ÍÎªÕæ
 	}
 }
-
 //´¦ÀíifÓï¾ä£¬µ±Ç°ÊÇif
 void ifstatement() {
 	int label1, label2;
@@ -779,7 +756,6 @@ void ifstatement() {
 	}
 	placeLabel(label2);
 }
-
 //´¦ÀíÓï¾äÁĞ
 void statementlist() {
 	//Óï¾äÁĞ°üº¬0»òÕß¶àÌõÓï¾ä
@@ -790,7 +766,6 @@ void statementlist() {
 		statements();
 	}
 }
-
 // ´¦Àí³ÌĞò    £¼³ÌĞò£¾    ::= £Û£¼³£Á¿ËµÃ÷£¾£İ£Û£¼±äÁ¿ËµÃ÷£¾£İ{£¼ÓĞ·µ»ØÖµº¯Êı¶¨Òå£¾|£¼ÎŞ·µ»ØÖµº¯Êı¶¨Òå£¾}£¼Ö÷º¯Êı£¾
 void program() {
 	int funcDeclared = 0;//±ê¼ÇÎ»£¬±íÊ¾º¯ÊıÊÇ·ñ¶¨Òå¹ı£¬¿ØÖÆ±äÁ¿ÉùÃ÷Óëº¯Êı¶¨ÒåµÄË³Ğò
@@ -812,13 +787,10 @@ void program() {
 		//ËµÃ÷µ±Ç°»¹ÓĞ·ûºÅ£¬¼´mainº¯Êı½áÊøºó»¹ÓĞ¶àÓà×Ö·û
 		if (curWord.sy != noSym) error(28);
 }
-
 //Ö÷º¯Êı
 int main() {
 	printf("Please input your source file's name\n");
-	// ¶ÁÈëÎÄ¼ş£¬±£´æÓÚbufferÊı×éÖĞ
-	//string file_name = "14051131_test.txt";
-	string file_name;
+	string file_name;// ¶ÁÈëÎÄ¼ş£¬±£´æÓÚbufferÊı×éÖĞ
 	getline(cin, file_name);
 	FILE* infile = fopen(file_name.data(), "r");
 

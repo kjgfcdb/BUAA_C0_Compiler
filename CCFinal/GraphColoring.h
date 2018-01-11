@@ -39,8 +39,17 @@ void graphColorer::colorGraph(FuncBaseBlock* fbb, vector<vector<int>>& iG, set<s
 		int lastNode;
 		for (set<string>::iterator ite = cbv.begin(); ite != cbv.end(); ite++) {
 			int nodeId = id2int[*ite];//此节点的编号
-			if (find(nodeQue.begin(), nodeQue.end(), nodeId) != nodeQue.end()) //如果此节点已经添加到队列中了，那么跳过
+			bool found = false;
+			for (int k = 0; k < nodeQue.size(); k++) { //如果此节点已经添加到队列中了，那么跳过
+				if (nodeQue[k] == nodeId) {
+					found = true;
+					break;
+				}
+			}
+			if (found)
 				continue;
+			//if (find(nodeQue.begin(), nodeQue.end(), nodeId) != nodeQue.end()) 
+			//	continue;
 			lastNode = nodeId;
 			int degree = 0;//此节点的度，也就是节点所链接的边的数量
 			for (int i = 0; i < iG[nodeId].size(); i++) {//求出此节点对应的边的数量
