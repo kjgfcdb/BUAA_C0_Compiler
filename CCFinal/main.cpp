@@ -458,6 +458,7 @@ void statements() {
 			if (ident_type == charTyp && (!isExprChar)) error(37);//类型不正确，报错，注意
 #endif
 																  //只针对将int赋值给char的报错，如果是char赋值给int当然是可以的
+			//quadCodeTable.back().result = ident_save;
 			assign_quad(buildRegName(tempReg), ident_save);//生成赋值语句四元式
 		}
 		else if (curWord.sy == lBracket) {//给数组元素赋值
@@ -808,6 +809,14 @@ int main() {
 		buffer[TOTAL_LENGTH] = 0;
 		init(); // 初始化关键字集
 		program(); // 分析程序
+#ifdef OUTPUT_QUADCODE
+		for (int i = 0; i < quadCodeTable.size(); i++) {
+			if (quadCodeTable[i].right != "()") fout << setw(20) << "";
+			fout << setw(20) << quadCodeTable[i].op << setw(20) << quadCodeTable[i].left
+				<< setw(20) << quadCodeTable[i].right << setw(20) << quadCodeTable[i].result
+				<< endl;
+		}
+#endif
 #ifdef OPTIMIZE_ON
 		BaseBlock bb;//基本块优化模块
 		bb.genBaseBlock();//为全体四元式划分基本块，包括划分若干函数块，每个函数块再划分若干基本块

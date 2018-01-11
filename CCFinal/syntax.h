@@ -18,7 +18,6 @@ using namespace std;
 
 #ifdef FILE_OUTPUT
 ofstream fout;
-#define cout fout
 #endif // FILE_OUTPUT
 
 //符号定义
@@ -188,9 +187,9 @@ void statementlist();
 void program();
 //输出符号表
 void printSymbolTable() {
-	cout << endl << endl;
-	cout << "--------Symbol Table--------" << endl;
-	cout << setw(10) << "name"
+	fout << endl << endl;
+	fout << "--------Symbol Table--------" << endl;
+	fout << setw(10) << "name"
 		<< setw(10) << "type"
 		<< setw(10) << "objtype"
 		<< setw(10) << "value"
@@ -215,7 +214,7 @@ void printSymbolTable() {
 
 	for (int i = 1; i < symbolTable.size(); i++) {
 		symbolTableItem temp = symbolTable[i];
-		cout << setw(10) << temp.name
+		fout << setw(10) << temp.name
 			<< setw(10) << typesDict[temp.type]
 			<< setw(10) << objTypDict[temp.objTyp]
 			<< setw(10) << temp.value
@@ -229,15 +228,15 @@ void printSymbolTable() {
 }
 //输出分程序表
 void printBtab() {
-	cout << endl << endl;
-	cout << "--------Block Table--------" << endl;
-	cout << setw(10) << "lastItem"
+	fout << endl << endl;
+	fout << "--------Block Table--------" << endl;
+	fout << setw(10) << "lastItem"
 		<< setw(10) << "lastPara"
 		<< setw(10) << "psize"
 		<< setw(10) << "isize"
 		<< endl;
 	for (int i = 0; i < btabIndex; i++) {
-		cout << setw(10) << btab[i].lastItem
+		fout << setw(10) << btab[i].lastItem
 			<< setw(10) << btab[i].lastPar
 			<< setw(10) << btab[i].psize
 			<< setw(10) << btab[i].isize
@@ -247,7 +246,7 @@ void printBtab() {
 //输出字符串表
 void printStrTable() {
 	for (int i = 0; i < stringTable.size(); i++) {
-		cout << setw(4) << i + 1 << stringTable[i].val << endl;
+		fout << setw(4) << i + 1 << stringTable[i].val << endl;
 	}
 }
 #endif // !SYNTAX_H

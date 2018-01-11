@@ -96,12 +96,6 @@ int globalSearch(string name) {
 }
 //生成四元式
 void genQuadCode(string op, string src1, string src2, string result) {
-#ifdef OUTPUT_QUADCODE
-	if (src2 != "()") cout << setw(20) << "";
-	cout << setw(20) << op << setw(20) << src1
-		<< setw(20) << src2 << setw(20) << result
-		<< endl;
-#endif
 	quadCodeTable.push_back({ op,src1,src2,result });
 }
 //登记符号表
