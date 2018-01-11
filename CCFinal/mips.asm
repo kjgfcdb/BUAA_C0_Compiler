@@ -34,7 +34,6 @@ Label_0:
 Label_1:
 	div $t0,$s3,$s4 # #reg4 = j/i
 	mul $t1,$t0,$s4 # x1 = #reg4*i
-	sw $t1,-4120($fp) # spill x1
 	bne $t1,$s3,Label_2 # x1!=j
 	subu $s0,$s0,$s4 # s = s-i
 	li $t0,1
@@ -104,7 +103,6 @@ Label_9:
 Label_10:
 	div $t0,$s0,$s4 # #reg30 = m/i
 	mul $t1,$t0,$s4 # x2 = #reg30*i
-	sw $t1,-4140($fp) # spill x2
 	bne $t1,$s0,Label_11 # x2!=m
 	li $s1,0 # $s1=0
 	j Label_12
@@ -126,7 +124,6 @@ Label_12:
 	li $t1,10
 	div $t2,$s3,$t1 # #reg40 = h/10
 	mul $t3,$t2,$t1 # x2 = #reg40*10
-	sw $t3,-4140($fp) # spill x2
 	bne $t3,$s3,Label_14 # x2!=h
 	li $v0,4 # print string
 	la $a0,_str6

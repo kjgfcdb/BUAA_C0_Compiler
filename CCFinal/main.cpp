@@ -459,7 +459,6 @@ void statements() {
 #endif
 																  //只针对将int赋值给char的报错，如果是char赋值给int当然是可以的
 			quadCodeTable.back().result = ident_save;
-			//assign_quad(buildRegName(tempReg), ident_save);//生成赋值语句四元式
 		}
 		else if (curWord.sy == lBracket) {//给数组元素赋值
 			if (symbolTable[search_result].objTyp != arrayTyp) {
