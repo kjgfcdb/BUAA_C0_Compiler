@@ -110,7 +110,7 @@ void factor(int& regId) {
 			}
 			leftOperand = ident_save;//分配左右操作符
 			rightOperand = buildRegName(tempReg);
-			expr_insert("=[]", -1, -1, regId);//生成四元式数组取值,	=[],a,i,result
+			calcu_quad("=[]", -1, -1, regId);//生成四元式数组取值,	=[],a,i,result
 			test({ rBracket }, EXPR_FOLLOW, 6);
 		}
 		else if (curWord.sy == lParent) {//有返回值函数调用
@@ -156,7 +156,7 @@ void factor(int& regId) {
 			exprVal = getIntValue(false, op + curWord.value);//更新表达式的值
 			isExprStatic = true;
 			isExprChar = false;
-			expr_insert(op, -1, -1, regId);//产生#regi = 0-2类型的运算
+			calcu_quad(op, -1, -1, regId);//产生#regi = 0-2类型的运算
 			getNextWord();
 		}
 		else test({ intCon }, EXPR_FOLLOW, 13);
@@ -190,7 +190,7 @@ void term(int& regId) {
 		if (tempReg == -1) rop = operand;//保存操作数
 		leftOperand = lop;
 		rightOperand = rop;
-		term_insert(op, regId, tempReg, regId);
+		calcu_quad(op, regId, tempReg, regId);
 		isExprChar = false;//参与了其他运算，不是char类型
 	}
 	exprVal = tempExprVal;
@@ -212,7 +212,7 @@ void expression(int& regId) {
 	if (isNegtive) {//处理第一项的正负号
 		leftOperand = "0";
 		rightOperand = lop;
-		expr_insert("-", -1, regId, regId);
+		calcu_quad("-", -1, regId, regId);
 		tempExprVal = -tempExprVal;
 	}
 	while (curWord.sy == plusSy || curWord.sy == minusSy) {
@@ -225,13 +225,13 @@ void expression(int& regId) {
 		if (tempReg == -1) rop = operand;//保存操作数
 		leftOperand = lop;
 		rightOperand = rop;
-		expr_insert(op, regId, tempReg, regId);
+		calcu_quad(op, regId, tempReg, regId);
 		isExprChar = false;//参与了运算，不是char类型
 	}
 	if (regId == -1) {//如果regId还是没有被分配，那么强行分配一个寄存器
 		leftOperand = lop;
 		rightOperand = "";
-		expr_insert("=", -1, -1, regId);
+		calcu_quad("=", -1, -1, regId);
 	}
 	exprVal = tempExprVal;//最后将临时的表达式的值赋给exprVal
 	isExprStatic = tempIsExprStatic;

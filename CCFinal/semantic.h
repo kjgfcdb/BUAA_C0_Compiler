@@ -71,7 +71,6 @@ int genLabel() {
 int allocReg() {//直接让寄存器号加一
 	return regUsed++;
 }
-
 //在当前符号表中查找标识符
 int localSearch(string name) {
 	int j;
@@ -248,7 +247,8 @@ void param_insert(string name, types t) {
 	MEM_IDX++;
 	genQuadCode("param", (t == intTyp ? "int" : "char"), name, "");
 }
-void expr_insert(string op, int src1, int src2, int& result) {
+//产生运算类四元式
+void calcu_quad(string op, int src1, int src2, int& result) {
 	if (src1 < 0 && src2 < 0) {//如果操作符都是不是寄存器，那么分配一个新的寄存器
 		result = allocReg();
 		genQuadCode(op, leftOperand, rightOperand, buildRegName(result));
@@ -265,10 +265,6 @@ void expr_insert(string op, int src1, int src2, int& result) {
 		result = src1;
 		genQuadCode(op, buildRegName(src1), buildRegName(src2), buildRegName(result));
 	}
-}
-//产生项层面的四元式
-void term_insert(string op, int src1, int src2, int& result) {
-	expr_insert(op, src1, src2, result);
 }
 //函数调用
 void funcCall(string funcName, int& regId, bool ifRet) {
