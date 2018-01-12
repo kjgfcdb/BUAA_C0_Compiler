@@ -35,7 +35,7 @@ void init() {
 	errormap[26] = "default";//必须是default符号
 	errormap[27] = "lack of main function";//程序缺少main函数
 	errormap[28] = "extra symbol at the end of program";//程序尾部多余字符
-	errormap[29] = "quote doesn't match";//括号不匹配
+	errormap[29] = "quote doesn't match";//引号不匹配
 	errormap[30] = "illegal character";//非法字符
 	errormap[31] = "illegal symbol";//非法符号
 	errormap[32] = "illegal symbol in return statement";//返回语句中非法符号

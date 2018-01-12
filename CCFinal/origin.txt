@@ -1,13 +1,10 @@
-int x,y;
-void test(int a,int b){
-	int tmp;
-	tmp = b;
-	b = x;
-	x = tmp;
-	printf(b);
-	printf(x);
-}
-
 void main(){
-	
+int i,j,k,p;
+k=2;
+i=k+1;
+j=k+1;
+i=k+1+2;
+j=k+1+3;
+p=k+1+1;
+printf(p);
 }

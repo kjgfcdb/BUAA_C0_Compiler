@@ -591,7 +591,12 @@ void switchstatement() {
 	int exitLabel = genLabel();//生成结束的label
 	int linkLabel = genLabel();//生成第一个情况的label
 	casetable(tempReg, linkLabel, exitLabel);//处理情况表
-	defaultstatement(linkLabel, exitLabel);//处理缺省情况
+	if (curWord.sy == defaultSy) {
+		defaultstatement(linkLabel, exitLabel);//处理缺省情况
+	}
+	else {
+		error(26);//不是default，报错
+	}
 	placeLabel(exitLabel);//放置结束标号
 	test({ rBrace }, STMT_FIRST, 8);//右大括号缺失容错
 }

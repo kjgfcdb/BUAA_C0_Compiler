@@ -259,3 +259,13 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/CCFinal/test/test_5.txt
+/CCFinal/test/test_4.txt
+/CCFinal/test/test_3.txt
+/CCFinal/test/test_2.txt
+/CCFinal/test/test_1.txt
+/CCFinal/test/err_test_5.txt
+/CCFinal/test/err_test_4.txt
+/CCFinal/test/err_test_3.txt
+/CCFinal/test/err_test_2.txt
+/CCFinal/test/err_test_1.txt

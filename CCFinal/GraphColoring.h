@@ -17,13 +17,9 @@ public:
 	map<string, int> id2int;//标识符名到节点编号的映射
 	map<int, int> int2color;//节点编号与对应的寄存器的映射
 	set<string> crossBBVar;//跨基本块仍然活跃的变量
-	graphColorer();
 	void colorGraph(FuncBaseBlock* fbb, vector<vector<int>>& iG, set<string>& cbv);
 	void buildInterferenceGraph(FuncBaseBlock* fbb);
 };
-//初始化图染色器
-graphColorer::graphColorer() {
-}
 //开始图染色,根据冲突图和跨基本块仍然活跃的变量
 void graphColorer::colorGraph(FuncBaseBlock* fbb, vector<vector<int>>& iG, set<string>& cbv) {
 	//初始化寄存器分配
