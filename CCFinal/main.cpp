@@ -1,7 +1,7 @@
 #include "codeGenerate.h"
 
 //#define CHECK_INT_TO_CHAR // int类型向char类型转换是否要检测
-#define OPTIMIZE_ON //是否开启优化
+#define OLD_MIPS_OUT //是否输出旧版本的mips
 void error(int errNo) { //输出错误信息，包括错误数量统计以及错误所在行数
 	errCnt++;
 	printf("Error %d : %s at line %d\n", errCnt, errormap[errNo].c_str(), curLineCnt);
@@ -798,12 +798,11 @@ int main() {
 	string file_name;// 读入文件，保存于buffer数组中
 	getline(cin, file_name);
 	FILE* infile = fopen(file_name.data(), "r");
-
 #ifdef FILE_OUTPUT
-	fout.open("out.txt");//旧的四元式
+	fout.open("oldQuad.txt");//旧的四元式
 #endif // FILE_OUTPUT
 #ifdef ASM_OUTPUT
-	asmout.open("mips.asm");//mips代码
+	asmout.open("oldMips.asm");//旧的mips代码
 #endif // ASM_OUTPUT
 #ifdef NEW_QUAD_OUT
 	OptimizedQuad.open("newQuad.txt");//优化后的四元式
@@ -821,7 +820,12 @@ int main() {
 				<< endl;
 		}
 #endif
-#ifdef OPTIMIZE_ON
+#ifdef OLD_MIPS_OUT 
+		NaiveGenerator ng;//未优化版本
+		ng.generateMips();
+#endif // OPTIMIZE_ON
+		asmout.close();
+		asmout.open("newMips.asm");//优化后的mips代码
 		BaseBlock bb;//基本块优化模块
 		bb.genBaseBlock();//为全体四元式划分基本块，包括划分若干函数块，每个函数块再划分若干基本块
 						  //遍历函数块
@@ -845,12 +849,8 @@ int main() {
 		}
 		CodeGenerator cg(bb.funcBlocks);//代码生成器
 		cg.genOptMips();
-#else
-		NaiveGenerator ng;//未优化版本
-		ng.generateMips();
-#endif // OPTIMIZE_ON
-		printSymbolTable();
-		printBtab();
+		//printSymbolTable();
+		//printBtab();
 		fclose(infile);// 关闭文件
 	}
 	else
