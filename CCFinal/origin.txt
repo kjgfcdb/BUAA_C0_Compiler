@@ -1,7 +1,7 @@
+void err(){
+	int x;
+	const int a = 10;
+	printf("hello");
+}
 void main(){
-	int a;
-	int b;
-	b = 11;
-	a = b/10;
-	printf(a);
 }

@@ -123,13 +123,9 @@ public:
 		set<string> tempOutSet = curFuncBlock->innerBlocks[curBBIdx]->outSet;
 		for (int i = 0; i < regPool.size(); i++) {
 			if (regPool[i].inUse && regPool[i].id != "" && regPool[i].dirty) {
-				//注意只需要写回那些在使用的临时变量
-				if (regPool[i].id.size() > 0 && regPool[i].id[0] == '#') {
-					if (tempOutSet.find(regPool[i].id) != tempOutSet.end()) {
-						emit("sw", "$t" + int2str(i), regPool[i].mem, " # spill " + regPool[i].id);
-					}
-				}
-				else {
+				//注意只需要写回全局变量和后续会使用到的变量
+				int sbtIdx = cgGlobalSearch(regPool[i].id);
+				if ((sbtIdx != 0 && symbolTable[sbtIdx].lev == 0) || tempOutSet.find(regPool[i].id) != tempOutSet.end()) {
 					emit("sw", "$t" + int2str(i), regPool[i].mem, " # spill " + regPool[i].id);
 				}
 				regPool[i].id = "";

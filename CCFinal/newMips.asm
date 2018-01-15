@@ -138,7 +138,7 @@ Func_6: # function operator
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,4 # $fp = old $sp
-	subi $sp,$sp,108 # make space for locals and temps
+	subi $sp,$sp,88 # make space for locals and temps
 	li $t0,1
 	li $t1,0
 	subu $t2,$t0,$t1 # #reg17 = 1-0
@@ -147,54 +147,54 @@ Func_6: # function operator
 	mul $t5,$t3,$t4 # #reg14 = 5*6
 	div $t6,$t0,$t0 # #reg10 = 1/1
 	li $t7,4
-	subu $t8,$t1,$t7 # #reg5 = 0-4
-	div $t9,$t8,$t7 # #reg9 = #reg5/4
+	subu $t8,$t1,$t7 # d = 0-4
+	div $t9,$t8,$t7 # #reg9 = d/4
 	li $t1,2
 	sw $t2,-32($fp)
-	addu $t2,$t0,$t1 # #reg3 = 1+2
+	addu $t2,$t0,$t1 # #reg232 = 1+2
 	li $t3,3
-	mul $t4,$t2,$t3 # #reg232 = #reg3*3
-	sw $t4,-56($fp)
-	mul $t4,$t3,$t0 # #reg4 = 3*1
-	sw $t4,-60($fp)
-	lw $t4,-56($fp) # load $t4 = #reg232
+	mul $t4,$t2,$t3 # #reg233 = #reg232*3
+	sw $t4,-52($fp)
+	mul $t4,$t3,$t0 # c = 3*1
+	sw $t4,-16($fp)
+	lw $t4,-52($fp) # load $t4 = #reg233
 	sw $t5,-36($fp)
-	lw $t5,-60($fp) # load $t5 = #reg4
+	lw $t5,-16($fp) # load $t5 = c
 	sw $t6,-40($fp)
-	addu $t6,$t4,$t5 # #reg233 = #reg232+#reg4
-	subu $t7,$t6,$t9 # #reg234 = #reg233-#reg9
-	sw $t8,-44($fp)
+	addu $t6,$t4,$t5 # #reg234 = #reg233+c
+	subu $t7,$t6,$t9 # #reg8 = #reg234-#reg9
+	sw $t8,-20($fp)
 	lw $t8,-40($fp) # load $t8 = #reg10
-	sw $t9,-48($fp)
-	addu $t9,$t7,$t8 # #reg8 = #reg234+#reg10
-	mul $t0,$t9,$t3 # #reg12 = #reg8*3
-	sw $t0,-76($fp)
+	sw $t9,-44($fp)
+	addu $t9,$t7,$t8 # a = #reg8+#reg10
+	mul $t0,$t9,$t3 # #reg12 = a*3
+	sw $t0,-64($fp)
 	li $t0,0
-	addu $t1,$t0,$t9 # #reg235 = 0+#reg8
-	sw $t2,-52($fp)
-	lw $t2,-76($fp) # load $t2 = #reg12
+	addu $t1,$t0,$t9 # #reg235 = 0+a
+	sw $t2,-48($fp)
+	lw $t2,-64($fp) # load $t2 = #reg12
 	addu $t3,$t1,$t2 # #reg236 = #reg235+#reg12
-	addu $t4,$t3,$t5 # #reg237 = #reg236+#reg4
-	lw $t5,-48($fp) # load $t5 = #reg9
-	sw $t6,-64($fp)
-	subu $t6,$t4,$t5 # #reg238 = #reg237-#reg9
-	sw $t7,-68($fp)
+	addu $t4,$t3,$t5 # #reg237 = #reg236+c
+	lw $t5,-44($fp) # load $t5 = #reg9
+	sw $t6,-56($fp)
+	subu $t6,$t4,$t5 # #reg11 = #reg237-#reg9
+	sw $t7,-60($fp)
 	lw $t7,-36($fp) # load $t7 = #reg14
-	addu $t8,$t6,$t7 # #reg11 = #reg238+#reg14
-	sw $t9,-72($fp)
-	mul $t9,$t8,$t0 # #reg16 = #reg11*0
-	sw $t9,-100($fp)
-	lw $t9,-72($fp) # load $t9 = #reg8
-	sw $t1,-80($fp)
-	subu $t1,$t0,$t9 # #reg239 = 0-#reg8
-	lw $t2,-100($fp) # load $t2 = #reg16
-	sw $t3,-84($fp)
-	addu $t3,$t1,$t2 # #reg240 = #reg239+#reg16
-	sw $t4,-88($fp)
+	addu $t8,$t6,$t7 # b = #reg11+#reg14
+	sw $t9,-8($fp)
+	mul $t9,$t8,$t0 # #reg16 = b*0
+	sw $t9,-84($fp)
+	lw $t9,-8($fp) # load $t9 = a
+	sw $t1,-68($fp)
+	subu $t1,$t0,$t9 # #reg238 = 0-a
+	lw $t2,-84($fp) # load $t2 = #reg16
+	sw $t3,-72($fp)
+	addu $t3,$t1,$t2 # #reg15 = #reg238+#reg16
+	sw $t4,-76($fp)
 	lw $t4,-32($fp) # load $t4 = #reg17
-	subu $t5,$t3,$t4 # #reg15 = #reg240-#reg17
+	subu $t5,$t3,$t4 # e = #reg15-#reg17
 exit_Func_6: # exit function operator
-	addi $sp,$sp,108 # pop locals and temps
+	addi $sp,$sp,88 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,8
@@ -245,24 +245,22 @@ Func_10: # function dowhile
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,4 # $fp = old $sp
-	subi $sp,$sp,24 # make space for locals and temps
+	subi $sp,$sp,12 # make space for locals and temps
 	li $s1,100 # $s1=100
 	li $s0,0 # $s0=0
 Label_0:
 	li $t0,50
 	blt $s1,$t0,Label_1 # i<50
 	li $t0,2
-	div $t1,$s1,$t0 # #reg22 = i/2
-	addu $s1,$0,$t1 # $s1=#reg22
+	div $s1,$s1,$t0 # i = i/2
 	j Label_2
 Label_1:
 Label_2:
 	li $t0,50
 	bge $s1,$t0,Label_3 # i>=50
 	li $t0,10
-	addu $t1,$s1,$t0 # #reg241 = i+10
-	div $t2,$t1,$t0 # #reg25 = #reg241/10
-	addu $s1,$0,$t2 # $s1=#reg25
+	addu $t1,$s1,$t0 # #reg25 = i+10
+	div $s1,$t1,$t0 # i = #reg25/10
 	j Label_4
 Label_3:
 Label_4:
@@ -274,15 +272,14 @@ Label_4:
 Label_5:
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	subu $t1,$s1,$t0 # #reg29 = i-1
-	addu $s1,$0,$t1 # $s1=#reg29
+	subu $s1,$s1,$t0 # i = i-1
 	li $v0,4 # print string
 	la $a0,_str4
 	syscall 
-	li $t2,0
-	bne $t2,$t2,Label_5 # 0!=0
+	li $t1,0
+	bne $t1,$t1,Label_5 # 0!=0
 exit_Func_10: # exit function dowhile
-	addi $sp,$sp,24 # pop locals and temps
+	addi $sp,$sp,12 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,8
@@ -303,13 +300,12 @@ Func_12: # function ifcondition
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,4 # $fp = old $sp
-	subi $sp,$sp,48 # make space for locals and temps
+	subi $sp,$sp,24 # make space for locals and temps
 	li $s0,0 # $s0=0
 	li $t0,1
 	bne $t0,$t0,Label_6 # 1!=1
 	li $t0,1
-	addu $t1,$s0,$t0 # #reg35 = rightnumber+1
-	addu $s0,$0,$t1 # $s0=#reg35
+	addu $s0,$s0,$t0 # rightnumber = rightnumber+1
 	j Label_7
 Label_6:
 Label_7:
@@ -317,51 +313,45 @@ Label_7:
 	li $t1,1
 	ble $t0,$t1,Label_8 # 2<=1
 	li $t0,1
-	addu $t1,$s0,$t0 # #reg39 = rightnumber+1
-	addu $s0,$0,$t1 # $s0=#reg39
+	addu $s0,$s0,$t0 # rightnumber = rightnumber+1
 	j Label_9
 Label_8:
 Label_9:
 	li $s1,0 # $s1=0
-	li $t0,0
-	li $t1,1
-	bge $t0,$t1,Label_10 # 0>=1
 	li $t0,1
-	addu $t1,$s0,$t0 # #reg43 = rightnumber+1
-	addu $s0,$0,$t1 # $s0=#reg43
+	bge $s1,$t0,Label_10 # a>=1
+	li $t0,1
+	addu $s0,$s0,$t0 # rightnumber = rightnumber+1
 	j Label_11
 Label_10:
 Label_11:
 	li $t0,1
 	beq $s1,$t0,Label_12 # a==1
 	li $t0,1
-	addu $t1,$s0,$t0 # #reg46 = rightnumber+1
-	addu $s0,$0,$t1 # $s0=#reg46
+	addu $s0,$s0,$t0 # rightnumber = rightnumber+1
 	j Label_13
 Label_12:
 Label_13:
 	li $t0,0
 	blt $s1,$t0,Label_14 # a<0
 	li $t0,1
-	addu $t1,$s0,$t0 # #reg49 = rightnumber+1
-	addu $s0,$0,$t1 # $s0=#reg49
+	addu $s0,$s0,$t0 # rightnumber = rightnumber+1
 	j Label_15
 Label_14:
 Label_15:
 	li $t0,0
 	bgt $s1,$t0,Label_16 # a>0
 	li $t0,1
-	addu $t1,$s0,$t0 # #reg52 = rightnumber+1
-	addu $s0,$0,$t1 # $s0=#reg52
+	addu $s0,$s0,$t0 # rightnumber = rightnumber+1
 	j Label_17
 Label_16:
 Label_17:
 	li $t0,1
 	li $t1,3
 	mul $t2,$t0,$t1 # #reg55 = 1*3
-	addu $t3,$t0,$t0 # #reg242 = 1+1
-	addu $t4,$t3,$t0 # #reg243 = #reg242+1
-	addu $t5,$t4,$t2 # #reg54 = #reg243+#reg55
+	addu $t3,$t0,$t0 # #reg239 = 1+1
+	addu $t4,$t3,$t0 # #reg240 = #reg239+1
+	addu $t5,$t4,$t2 # #reg54 = #reg240+#reg55
 	beq $s0,$t5,Label_18 # rightnumber==#reg54
 	li $v0,4 # print string
 	la $a0,_str5
@@ -377,7 +367,7 @@ Label_19:
 Label_20:
 Label_21:
 exit_Func_12: # exit function ifcondition
-	addi $sp,$sp,48 # pop locals and temps
+	addi $sp,$sp,24 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,8
@@ -424,10 +414,10 @@ Func_14: # function switchcodintion
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,4 # $fp = old $sp
-	subi $sp,$sp,24 # make space for locals and temps
+	subi $sp,$sp,16 # make space for locals and temps
 	li $s2,1 # $s2=1
 	li $s1,0 # $s1=0
-	li $s0,0 # $s0=0
+	addu $s0,$0,$s1 # $s0=rightnumber
 Label_27:
 	li $t0,1
 	addu $s3,$s2,$t0 # #reg66 = i+1
@@ -445,17 +435,15 @@ Label_27:
 	addu $t0,$0,$v1
 	bne $s3,$t0,Label_28 # #reg66!=@RET
 	li $t0,1
-	addu $t1,$s1,$t0 # #reg69 = rightnumber+1
-	addu $s1,$0,$t1 # $s1=#reg69
+	addu $s1,$s1,$t0 # rightnumber = rightnumber+1
 	j Label_29
 Label_28:
 Label_29:
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	addu $t1,$s2,$t0 # #reg70 = i+1
-	addu $s2,$0,$t1 # $s2=#reg70
-	li $t2,5
-	blt $t1,$t2,Label_27 # #reg70<5
+	addu $s2,$s2,$t0 # i = i+1
+	li $t1,5
+	blt $s2,$t1,Label_27 # i<5
 	li $t0,4
 	beq $s1,$t0,Label_30 # rightnumber==4
 	li $v0,4 # print string
@@ -475,7 +463,7 @@ Label_33:
 	la $a0,_str8
 	syscall 
 exit_Func_14: # exit function switchcodintion
-	addi $sp,$sp,24 # pop locals and temps
+	addi $sp,$sp,16 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,8
@@ -485,11 +473,11 @@ Func_15: # function condition
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,4 # $fp = old $sp
-	subi $sp,$sp,20 # make space for locals and temps
+	subi $sp,$sp,16 # make space for locals and temps
 	li $t0,5 # const intermax=5
 	sw $t0,-8($fp)
 	li $s1,0 # $s1=0
-	li $s0,0 # $s0=0
+	addu $s0,$0,$s1 # $s0=iter
 Label_34:
 	addu $s2,$0,$s1 # $s2=iter
 Label_36:
@@ -533,12 +521,11 @@ Label_43:
 Label_35:
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	addu $t1,$s1,$t0 # #reg86 = iter+1
-	addu $s1,$0,$t1 # $s1=#reg86
-	lw $t2,-8($fp) # load $t2 = intermax
-	blt $t1,$t2,Label_34 # #reg86<intermax
+	addu $s1,$s1,$t0 # iter = iter+1
+	lw $t1,-8($fp) # load $t1 = intermax
+	blt $s1,$t1,Label_34 # iter<intermax
 exit_Func_15: # exit function condition
-	addi $sp,$sp,20 # pop locals and temps
+	addi $sp,$sp,16 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,8
@@ -564,9 +551,9 @@ Func_17: # function miscellaneous
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,4 # $fp = old $sp
-	subi $sp,$sp,1188 # make space for locals and temps
+	subi $sp,$sp,1172 # make space for locals and temps
 	li $s1,0 # $s1=0
-	li $s0,0 # $s0=0
+	addu $s0,$0,$s1 # $s0=i
 Label_46:
 	sll $t0,$s1,2
 	subi $t1,$fp,16
@@ -574,13 +561,12 @@ Label_46:
 	sw $s1,0($t1) # array[i] = i
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	addu $t1,$s1,$t0 # #reg95 = i+1
-	addu $s1,$0,$t1 # $s1=#reg95
-	li $t2,23
-	blt $t1,$t2,Label_46 # #reg95<23
+	addu $s1,$s1,$t0 # i = i+1
+	li $t1,23
+	blt $s1,$t1,Label_46 # i<23
 	li $s2,'a' # $s2='a'
 	li $s1,0 # $s1=0
-	li $s0,0 # $s0=0
+	addu $s0,$0,$s1 # $s0=i
 Label_47:
 	sll $t0,$s1,2
 	subi $t1,$fp,124
@@ -588,37 +574,34 @@ Label_47:
 	sw $s2,0($t1) # buf[i] = ch1
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	addu $t1,$s1,$t0 # #reg104 = i+1
-	addu $t2,$s2,$t0 # #reg103 = ch1+1
-	addu $s2,$0,$t2 # $s2=#reg103
-	addu $s1,$0,$t1 # $s1=#reg104
-	li $t3,127
-	blt $t2,$t3,Label_47 # #reg103<127
+	addu $s1,$s1,$t0 # i = i+1
+	addu $s2,$s2,$t0 # ch1 = ch1+1
+	li $t1,127
+	blt $s2,$t1,Label_47 # ch1<127
 	addu $s1,$0,$s1 # $s1=i
 	li $s2,0 # $s2=0
-	li $s0,0 # $s0=0
+	addu $s0,$0,$s2 # $s0=_
 Label_48:
 	li $t0,2
 	li $t1,1
 	div $t2,$t0,$t1 # #reg111 = 2/1
-	mul $t3,$s2,$t1 # #reg244 = _*1
-	subu $t4,$t3,$s2 # #reg245 = #reg244-_
-	subu $t5,$t4,$t1 # #reg246 = #reg245-1
-	addu $t6,$t5,$t2 # #reg247 = #reg246+#reg111
-	subu $t7,$t6,$t1 # #reg248 = #reg247-1
-	div $t8,$t7,$t0 # #reg110 = #reg248/2
+	mul $t3,$s2,$t1 # #reg241 = _*1
+	subu $t4,$t3,$s2 # #reg242 = #reg241-_
+	subu $t5,$t4,$t1 # #reg243 = #reg242-1
+	addu $t6,$t5,$t2 # #reg244 = #reg243+#reg111
+	subu $t7,$t6,$t1 # #reg245 = #reg244-1
+	div $t8,$t7,$t0 # #reg110 = #reg245/2
 	sll $t9,$t8,2
-	sw $t5,-1172($fp)
+	sw $t5,-1160($fp)
 	subi $t5,$fp,124
 	subu $t5,$t5,$t9
-	sw $t6,-1176($fp)
+	sw $t6,-1164($fp)
 	li $t6,'a'
 	sw $t6,0($t5) # buf[#reg110] = 'a'
 	li $t0,1
 	addu $s0,$s0,$t0 # toy = toy+1
-	addu $t1,$s2,$t0 # #reg113 = _+1
-	addu $s2,$0,$t1 # $s2=#reg113
-	blt $t1,$s1,Label_48 # #reg113<endid
+	addu $s2,$s2,$t0 # _ = _+1
+	blt $s2,$s1,Label_48 # _<endid
 	li $t0,0
 	sll $t1,$t0,2
 	subi $t2,$fp,124
@@ -633,7 +616,7 @@ Label_48:
 Label_49:
 Label_50:
 exit_Func_17: # exit function miscellaneous
-	addi $sp,$sp,1188 # pop locals and temps
+	addi $sp,$sp,1172 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,8
@@ -764,9 +747,9 @@ Func_21: # function mod
 	subi $sp,$sp,12 # make space for locals and temps
 	lw $t0,0($fp) # load $t0 = n
 	lw $t1,-4($fp) # load $t1 = m
-	div $t2,$t0,$t1 # #reg249 = n/m
-	mul $t3,$t2,$t1 # #reg250 = #reg249*m
-	subu $t4,$t0,$t3 # #reg136 = n-#reg250
+	div $t2,$t0,$t1 # #reg246 = n/m
+	mul $t3,$t2,$t1 # #reg247 = #reg246*m
+	subu $t4,$t0,$t3 # #reg136 = n-#reg247
 	addu $v1,$0,$t4 # @RET = #reg136
 	j exit_Func_21
 exit_Func_21: # exit function mod
@@ -924,11 +907,10 @@ Func_25: # function is_prime
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,8 # $fp = old $sp
-	subi $sp,$sp,16 # make space for locals and temps
+	subi $sp,$sp,12 # make space for locals and temps
 	li $s1,2 # $s1=2
 	lw $t0,0($fp) # load $t0 = x
-	li $t1,2
-	bne $t0,$t1,Label_72 # x!=2
+	bne $t0,$s1,Label_72 # x!=i
 	li $v1,1 # @RET = 1
 	j exit_Func_25
 	j Label_73
@@ -955,16 +937,15 @@ Label_74:
 Label_75:
 Label_76:
 	li $t0,1
-	addu $t1,$s1,$t0 # #reg176 = i+1
-	mul $t2,$t1,$t1 # #reg177 = #reg176*#reg176
+	addu $s1,$s1,$t0 # i = i+1
+	mul $t1,$s1,$s1 # #reg177 = i*i
 	addu $s0,$s0,$t0 # toy = toy+1
-	addu $s1,$0,$t1 # $s1=#reg176
-	lw $t3,0($fp) # load $t3 = x
-	blt $t2,$t3,Label_74 # #reg177<x
+	lw $t2,0($fp) # load $t2 = x
+	blt $t1,$t2,Label_74 # #reg177<x
 	li $v1,1 # @RET = 1
 	j exit_Func_25
 exit_Func_25: # exit function is_prime
-	addi $sp,$sp,16 # pop locals and temps
+	addi $sp,$sp,12 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,12
@@ -974,7 +955,7 @@ Func_26: # function prime_factorization
 	sw $fp,4($sp) # save $fp
 	sw $ra,0($sp) # save $ra
 	addi $fp,$sp,8 # $fp = old $sp
-	subi $sp,$sp,28 # make space for locals and temps
+	subi $sp,$sp,20 # make space for locals and temps
 	li $s1,2 # $s1=2
 	li $s3,0 # $s3=0
 	lw $t0,0($fp) # load $t0 = n
@@ -1019,11 +1000,10 @@ Label_79:
 	li $s0,0 # $s0=0
 Label_82:
 	lw $t0,0($fp) # load $t0 = n
-	div $t1,$t0,$s1 # #reg193 = n/i
-	addu $t0,$0,$t1 # $t0=#reg193
-	li $t2,1
+	div $t0,$t0,$s1 # n = n/i
+	li $t1,1
 	sw $t0,0($fp) # spill n
-	bne $s3,$t2,Label_83 # first!=1
+	bne $s3,$t1,Label_83 # first!=1
 	li $v0,4 # print string
 	la $a0,_str21
 	syscall 
@@ -1060,12 +1040,11 @@ Label_85:
 Label_80:
 Label_86:
 	li $t0,1
-	addu $t1,$s1,$t0 # #reg202 = i+1
-	mul $t2,$t1,$t1 # #reg203 = #reg202*#reg202
+	addu $s1,$s1,$t0 # i = i+1
+	mul $t1,$s1,$s1 # #reg203 = i*i
 	addu $s2,$s2,$t0 # fuck = fuck+1
-	addu $s1,$0,$t1 # $s1=#reg202
-	lw $t3,0($fp) # load $t3 = n
-	blt $t2,$t3,Label_79 # #reg203<n
+	lw $t2,0($fp) # load $t2 = n
+	blt $t1,$t2,Label_79 # #reg203<n
 	lw $t0,0($fp) # load $t0 = n
 	li $t1,1
 	beq $t0,$t1,Label_87 # n==1
@@ -1084,7 +1063,7 @@ Label_89:
 Label_87:
 Label_90:
 exit_Func_26: # exit function prime_factorization
-	addi $sp,$sp,28 # pop locals and temps
+	addi $sp,$sp,20 # pop locals and temps
 	lw $fp,4($sp)
 	lw $ra,0($sp)
 	addi $sp,$sp,12

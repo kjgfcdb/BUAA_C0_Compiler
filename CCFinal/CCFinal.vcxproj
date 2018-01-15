@@ -146,12 +146,14 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mips.asm" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="newQuad.txt" />
+    <Text Include="oldQuad.txt" />
     <Text Include="origin.txt" />
     <Text Include="out.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="newMips.asm" />
+    <None Include="oldMips.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

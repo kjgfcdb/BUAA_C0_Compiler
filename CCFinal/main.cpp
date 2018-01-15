@@ -1,7 +1,6 @@
 #include "codeGenerate.h"
-
 //#define CHECK_INT_TO_CHAR // int类型向char类型转换是否要检测
-//#define OPTIMIZE_ON //是否开启优化
+#define OLD_MIPS_OUT //是否输出旧版本的mips
 void error(int errNo) { //输出错误信息，包括错误数量统计以及错误所在行数
 	errCnt++;
 	printf("Error %d : %s at line %d\n", errCnt, errormap[errNo].c_str(), curLineCnt);
@@ -110,7 +109,7 @@ void factor(int& regId) {
 			}
 			leftOperand = ident_save;//分配左右操作符
 			rightOperand = buildRegName(tempReg);
-			expr_insert("=[]", -1, -1, regId);//生成四元式数组取值,	=[],a,i,result
+			calcu_quad("=[]", -1, -1, regId);//生成四元式数组取值,	=[],a,i,result
 			test({ rBracket }, EXPR_FOLLOW, 6);
 		}
 		else if (curWord.sy == lParent) {//有返回值函数调用
@@ -156,7 +155,7 @@ void factor(int& regId) {
 			exprVal = getIntValue(false, op + curWord.value);//更新表达式的值
 			isExprStatic = true;
 			isExprChar = false;
-			expr_insert(op, -1, -1, regId);//产生#regi = 0-2类型的运算
+			calcu_quad(op, -1, -1, regId);//产生#regi = 0-2类型的运算
 			getNextWord();
 		}
 		else test({ intCon }, EXPR_FOLLOW, 13);
@@ -190,7 +189,7 @@ void term(int& regId) {
 		if (tempReg == -1) rop = operand;//保存操作数
 		leftOperand = lop;
 		rightOperand = rop;
-		term_insert(op, regId, tempReg, regId);
+		calcu_quad(op, regId, tempReg, regId);
 		isExprChar = false;//参与了其他运算，不是char类型
 	}
 	exprVal = tempExprVal;
@@ -212,7 +211,7 @@ void expression(int& regId) {
 	if (isNegtive) {//处理第一项的正负号
 		leftOperand = "0";
 		rightOperand = lop;
-		expr_insert("-", -1, regId, regId);
+		calcu_quad("-", -1, regId, regId);
 		tempExprVal = -tempExprVal;
 	}
 	while (curWord.sy == plusSy || curWord.sy == minusSy) {
@@ -225,13 +224,13 @@ void expression(int& regId) {
 		if (tempReg == -1) rop = operand;//保存操作数
 		leftOperand = lop;
 		rightOperand = rop;
-		expr_insert(op, regId, tempReg, regId);
+		calcu_quad(op, regId, tempReg, regId);
 		isExprChar = false;//参与了运算，不是char类型
 	}
 	if (regId == -1) {//如果regId还是没有被分配，那么强行分配一个寄存器
 		leftOperand = lop;
 		rightOperand = "";
-		expr_insert("=", -1, -1, regId);
+		calcu_quad("=", -1, -1, regId);
 	}
 	exprVal = tempExprVal;//最后将临时的表达式的值赋给exprVal
 	isExprStatic = tempIsExprStatic;
@@ -407,7 +406,7 @@ void functiondec() {
 	if (curWord.sy == ident) {
 		func_insert(funcName, save_type);//函数声明开始
 		getNextWord();
-		test({ lParent }, { intSy, charSy }, 3);
+		test({ lParent }, { intSy, charSy,rParent,lBrace }, 3);
 		funcBody(save_type, funcName);
 	}
 	else if (curWord.sy == mainSy) {
@@ -415,7 +414,7 @@ void functiondec() {
 			func_insert(curWord.value, save_type);//插入函数声明四元式
 			mainFuncFlag = true;
 			getNextWord();
-			test({ lParent }, { rParent }, 3);
+			test({ lParent }, { rParent,lBrace }, 3);
 			funcBody(voidTyp, "main");
 		}
 		else skip({ intSy, charSy, voidSy, lBrace }, 22);//报错，main函数不是void类型
@@ -458,8 +457,7 @@ void statements() {
 			if (ident_type == charTyp && (!isExprChar)) error(37);//类型不正确，报错，注意
 #endif
 																  //只针对将int赋值给char的报错，如果是char赋值给int当然是可以的
-			//quadCodeTable.back().result = ident_save;
-			assign_quad(buildRegName(tempReg), ident_save);//生成赋值语句四元式
+			quadCodeTable.back().result = ident_save;
 		}
 		else if (curWord.sy == lBracket) {//给数组元素赋值
 			if (symbolTable[search_result].objTyp != arrayTyp) {
@@ -592,7 +590,12 @@ void switchstatement() {
 	int exitLabel = genLabel();//生成结束的label
 	int linkLabel = genLabel();//生成第一个情况的label
 	casetable(tempReg, linkLabel, exitLabel);//处理情况表
-	defaultstatement(linkLabel, exitLabel);//处理缺省情况
+	if (curWord.sy == defaultSy) {
+		defaultstatement(linkLabel, exitLabel);//处理缺省情况
+	}
+	else {
+		error(26);//不是default，报错
+	}
 	placeLabel(exitLabel);//放置结束标号
 	test({ rBrace }, STMT_FIRST, 8);//右大括号缺失容错
 }
@@ -794,12 +797,11 @@ int main() {
 	string file_name;// 读入文件，保存于buffer数组中
 	getline(cin, file_name);
 	FILE* infile = fopen(file_name.data(), "r");
-
 #ifdef FILE_OUTPUT
-	fout.open("out.txt");//旧的四元式
+	fout.open("oldQuad.txt");//旧的四元式
 #endif // FILE_OUTPUT
 #ifdef ASM_OUTPUT
-	asmout.open("mips.asm");//mips代码
+	asmout.open("oldMips.asm");//旧的mips代码
 #endif // ASM_OUTPUT
 #ifdef NEW_QUAD_OUT
 	OptimizedQuad.open("newQuad.txt");//优化后的四元式
@@ -817,7 +819,12 @@ int main() {
 				<< endl;
 		}
 #endif
-#ifdef OPTIMIZE_ON
+#ifdef OLD_MIPS_OUT 
+		NaiveGenerator ng;//未优化版本
+		ng.generateMips();
+#endif // OPTIMIZE_ON
+		asmout.close();
+		asmout.open("newMips.asm");//优化后的mips代码
 		BaseBlock bb;//基本块优化模块
 		bb.genBaseBlock();//为全体四元式划分基本块，包括划分若干函数块，每个函数块再划分若干基本块
 						  //遍历函数块
@@ -841,12 +848,8 @@ int main() {
 		}
 		CodeGenerator cg(bb.funcBlocks);//代码生成器
 		cg.genOptMips();
-#else
-		NaiveGenerator ng;//未优化版本
-		ng.generateMips();
-#endif // OPTIMIZE_ON
-		printSymbolTable();
-		printBtab();
+		//printSymbolTable();
+		//printBtab();
 		fclose(infile);// 关闭文件
 	}
 	else
