@@ -1,5 +1,0 @@
-INPUT YOUR OPCODE,0 : function1_x , 1: function2
-input a num
-return code is 15
-
-

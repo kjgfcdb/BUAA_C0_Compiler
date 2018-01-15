@@ -1,7 +1,0 @@
-void err(){
-	int x;
-	const int a = 10;
-	printf("hello");
-}
-void main(){
-}

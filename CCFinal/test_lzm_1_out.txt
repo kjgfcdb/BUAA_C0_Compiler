@@ -1,9 +1,0 @@
-Hello World!
-35
-i=2
-a=12
-b=20
-a=20
-b=12
-fail
-6
