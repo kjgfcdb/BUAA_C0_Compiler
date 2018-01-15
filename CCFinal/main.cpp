@@ -1,5 +1,4 @@
 #include "codeGenerate.h"
-
 //#define CHECK_INT_TO_CHAR // int类型向char类型转换是否要检测
 #define OLD_MIPS_OUT //是否输出旧版本的mips
 void error(int errNo) { //输出错误信息，包括错误数量统计以及错误所在行数
@@ -407,7 +406,7 @@ void functiondec() {
 	if (curWord.sy == ident) {
 		func_insert(funcName, save_type);//函数声明开始
 		getNextWord();
-		test({ lParent }, { intSy, charSy }, 3);
+		test({ lParent }, { intSy, charSy,rParent,lBrace }, 3);
 		funcBody(save_type, funcName);
 	}
 	else if (curWord.sy == mainSy) {
@@ -415,7 +414,7 @@ void functiondec() {
 			func_insert(curWord.value, save_type);//插入函数声明四元式
 			mainFuncFlag = true;
 			getNextWord();
-			test({ lParent }, { rParent }, 3);
+			test({ lParent }, { rParent,lBrace }, 3);
 			funcBody(voidTyp, "main");
 		}
 		else skip({ intSy, charSy, voidSy, lBrace }, 22);//报错，main函数不是void类型
